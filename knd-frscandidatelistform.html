@@ -1,0 +1,132 @@
+<link rel="import"
+      href="../polymer/polymer.html"/>
+<link rel="import"
+      href="../core-ajax/core-ajax.html"/>
+<!-- @Todo clean import and bower.json file -->
+<script src="../underscore/underscore.js"></script>
+<script src="../underscore.string/lib/underscore.string.js"></script>
+<!-- bootstrap actions -->
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap-theme.css"/>
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap.css"/>
+<script src="../jquery/dist/jquery.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.js"></script>
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <knd-frscandidatelistform
+     urlrest=".."
+          skip=""
+          limit=""
+          params=""
+          headers='{"X-Requested-With": "XMLHttpRequest"}'
+    ></knd-loginform>
+
+@element knd-frscandidatelistform
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://kanedafromparis.github.io/knd-frscandidatelistform
+@Todo gestion du cross site (using headers ?)
+-->
+<polymer-element name="knd-frscandidatelistform"
+                 attributes="urlrest skip limit params editurl">
+
+    <template>
+
+        <link rel="stylesheet"
+              href="knd-frscandidatelistform.css"/>
+        <core-ajax
+                id="userDataSource"
+                auto="false"
+                url="{{urlrest+'/'skip+'/'+limit}}"
+                params="{{params}}"
+                handleAs="json"
+                on-core-response="{{handleResponse}}"></core-ajax>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Email</th>
+                <th>Birth Date</th>
+                <th>Birth Country</th>
+                <th>Education</th>
+                <th>Picture</th>
+            </tr>
+            </thead>
+            <tbody>
+            <template id="userTable" repeat="{{user in users}}">
+                <tr>
+                    <td><a href="{{editurl+'/'+user._id.$oid}}">{{user._id.$oid}}</a></td>
+                    <td>{{user.main.lastname}}</td>
+                    <td>{{user.main.firstname}}</td>
+                    <td>
+                        <template id="emails" repeat="{{email in user.emails}}">
+                        <div>{{email}}</div>
+                        </template>
+
+                    </td>
+                    <td>{{user.main.birthDate.$date.substring(0,10)}}</td>
+                    <td>{{user.main.birthCountry}}</td>
+                    <td>{{user.main.education}}</td>
+                    <td>{{user.picturesStatus}}</td>
+                </tr>
+            </template>
+            </tbody>
+        </table>
+    </template>
+
+    </template>
+
+    <script>
+        _.mixin(_.str.exports());
+        Polymer('knd-frscandidatelistform', {
+            publish: {
+                urlrest: null,
+                users: [],
+                skip: 0,
+                limit: 10,
+                toto:"nok",
+                observe: {
+                    urlrest: 'validate',
+                    toto: 'validate'
+                }
+
+            },
+            ready: function () {
+                //this.addEventListener('core-response', this.handleResponse);
+                this.$.userDataSource.go();
+            },
+            handleResponse: function (e) {
+                console.log("handleResponse : " + JSON.stringify(e.detail.response));
+                this.users = e.detail.response.users;
+
+
+            },
+
+            validate: function (oldValue, newValue) {
+                /**
+                 * Should refresh the list
+                 */
+                console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+            },
+
+            /* do not seems to works ;-)*/
+            urlrestChanged: function () {
+                if (typeof this.urlrest != "undefined") {
+                    console.log("urlrestChanged");
+                    /**
+                     * @TODO check that it does work with auto filled form
+                     */
+                }
+            }
+        });
+
+    </script>
+
+</polymer-element>

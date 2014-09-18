@@ -1,0 +1,23 @@
+{
+  "name": "knd-frscandidatelistform",
+  "version": "0.0.1",
+  "authors": [
+    "C. Sabourdin <kanedafromparis@gmail.com>"
+  ],
+  "description": "Element providing a login form, with register or google, twiter and facebook.",
+  "keywords": "loginform, polymer, web-components",
+  "main": "knd-frscandidatelistform.html",
+  "license": "LGPLv3",
+  "homepage": "https://github.com/kanedafromparis/knd-frscandidatelistform/",
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.4.0",
+    "polymer-test-tools": "Polymer/polymer-test-tools#~0.4.0",
+    "core-ajax": "Polymer/core-ajax#~0.4.0",
+    "underscore": "~1.6.0",
+    "underscore.string": "~2.3.3",
+    "bootstrap": "~3.2.0"
+  }
+}
