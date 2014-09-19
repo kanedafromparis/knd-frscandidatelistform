@@ -2,6 +2,15 @@
       href="../polymer/polymer.html"/>
 <link rel="import"
       href="../core-ajax/core-ajax.html"/>
+
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icons/av-icons.html">
+<link rel="import" href="../core-icons/maps-icons.html">
+<link rel="import" href="../core-icons/image-icons.html">
+<link rel="import" href="../core-icons/social-icons.html">
+<link rel="import" href="../core-selector/core-selector.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
 <!-- @Todo clean import and bower.json file -->
 <script src="../underscore/underscore.js"></script>
 <script src="../underscore.string/lib/underscore.string.js"></script>
@@ -10,39 +19,54 @@
       href="../bootstrap/dist/css/bootstrap-theme.css"/>
 <link rel="stylesheet"
       href="../bootstrap/dist/css/bootstrap.css"/>
-<script src="../jquery/dist/jquery.js"></script>
-<script src="../bootstrap/dist/js/bootstrap.js"></script>
+
 
 <!--
+@Todo collapse
 Element providing solution to no problem in particular.
 
 ##### Example
 
     <knd-frscandidatelistform
-     urlrest=".."
+     url=".."
+          navmode=""
+
           skip=""
           limit=""
           params=""
+          expandmax="50"
+          displaystep="10"
           headers='{"X-Requested-With": "XMLHttpRequest"}'
     ></knd-loginform>
-
+navmode define the way to navigate into the resultset via URL
+ - URL_CALL will produce url = url+'/'{{skip}}+'/'{{limit}}
+ - PARAMS_CALL will produce url = url+'?'&skip={{skip}}&limit={{limit}}
 @element knd-frscandidatelistform
 @blurb Element providing solution to no problem in particular.
 @status alpha
 @homepage http://kanedafromparis.github.io/knd-frscandidatelistform
 @Todo gestion du cross site (using headers ?)
+
 -->
 <polymer-element name="knd-frscandidatelistform"
-                 attributes="urlrest skip limit params editurl">
+                 attributes="url navmode skip limit expandmax displaystep params editurl">
 
     <template>
+        <section>
+            <paper-icon-button icon="av:skip-previous" on-click="{{skipPrevious}}"></paper-icon-button>
+            <paper-icon-button icon="av:fast-rewind" on-click="{{fastRewind}}"></paper-icon-button>
+            <paper-icon-button icon="expand-less" on-click="{{expandLess}}"></paper-icon-button>
+            <paper-icon-button icon="expand-more" on-click="{{expandMore}}"></paper-icon-button>
+            <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
+            <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
+        </section>
 
         <link rel="stylesheet"
               href="knd-frscandidatelistform.css"/>
         <core-ajax
                 id="userDataSource"
                 auto="false"
-                url="{{urlrest+'/'skip+'/'+limit}}"
+                url="{{computedURL}}"
                 params="{{params}}"
                 handleAs="json"
                 on-core-response="{{handleResponse}}"></core-ajax>
@@ -67,11 +91,11 @@ Element providing solution to no problem in particular.
                     <td>{{user.main.firstname}}</td>
                     <td>
                         <template id="emails" repeat="{{email in user.emails}}">
-                        <div>{{email}}</div>
+                            <div>{{email}}</div>
                         </template>
 
                     </td>
-                    <td>{{user.main.birthDate.$date.substring(0,10)}}</td>
+                    <td>{{formatDate(user.main.birthDate.$date)}}</td>
                     <td>{{user.main.birthCountry}}</td>
                     <td>{{user.main.education}}</td>
                     <td>{{user.picturesStatus}}</td>
@@ -79,7 +103,17 @@ Element providing solution to no problem in particular.
             </template>
             </tbody>
         </table>
-    </template>
+
+        <!-- navigation bar -->
+
+        <section>
+            <paper-icon-button icon="av:skip-previous" on-click="{{skipPrevious}}"></paper-icon-button>
+            <paper-icon-button icon="av:fast-rewind" on-click="{{fastRewind}}"></paper-icon-button>
+            <paper-icon-button icon="expand-less" on-click="{{expandLess}}"></paper-icon-button>
+            <paper-icon-button icon="expand-more" on-click="{{expandMore}}"></paper-icon-button>
+            <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
+            <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
+        </section>
 
     </template>
 
@@ -87,24 +121,35 @@ Element providing solution to no problem in particular.
         _.mixin(_.str.exports());
         Polymer('knd-frscandidatelistform', {
             publish: {
-                urlrest: null,
+                url: null,
+                computedURL: null,
+                params: {},
                 users: [],
                 skip: 0,
                 limit: 10,
-                toto:"nok",
+                end: 0,
+                expandmax: 50,
+                displaystep:10,
+                navmode:"URL_CALL",
                 observe: {
-                    urlrest: 'validate',
-                    toto: 'validate'
+                    url: 'validate'
                 }
 
             },
             ready: function () {
-                //this.addEventListener('core-response', this.handleResponse);
+                this.updateTable();
+            },
+            updateTable: function () {
+                this.buildRequest();
                 this.$.userDataSource.go();
             },
             handleResponse: function (e) {
                 console.log("handleResponse : " + JSON.stringify(e.detail.response));
                 this.users = e.detail.response.users;
+                if (this.expandmax > e.detail.response.expandmax){
+                    this.expandmax = e.detail.response.expandmax;
+                }
+                this.end = e.detail.response.end;
 
 
             },
@@ -113,20 +158,70 @@ Element providing solution to no problem in particular.
                 /**
                  * Should refresh the list
                  */
-                console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+                //console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
             },
-
-            /* do not seems to works ;-)*/
-            urlrestChanged: function () {
-                if (typeof this.urlrest != "undefined") {
-                    console.log("urlrestChanged");
-                    /**
-                     * @TODO check that it does work with auto filled form
-                     */
+            formatDate: function (dateValue) {
+                /**
+                 * Should refresh the list
+                 */
+                console.log("formatDate : " + JSON.stringify(dateValue));
+                return _.truncate(dateValue, 10);
+            },
+            skipPrevious: function () {
+                this.skip=0;
+                this.updateTable();
+            },
+            fastRewind: function (dateValue) {
+                this.skip=this.skip-this.limit;
+                if (this.skip < this.limit){
+                    this.skip=0;
                 }
+                this.updateTable();
+            },
+            fastForward: function (dateValue) {
+                this.skip=this.skip+this.limit;
+                if (this.skip > this.end){
+                    this.skip=this.end-this.limit;
+                }
+                this.updateTable();
+            },
+            skipNext: function (dateValue) {
+                this.skip=this.end-this.limit;
+            this.updateTable();
+        },
+            expandLess: function (dateValue) {
+                this.limit = this.limit - this.displaystep;
+                if(this.limit<this.displaystep){
+                    this.limit = this.displaystep;
+                }
+            this.updateTable();
+        },
+            expandMore: function (dateValue) {
+                this.limit = this.limit + this.displaystep;
+                if(this.limit>this.expandmax){
+                    this.limit = this.expandmax;
+                }
+            this.updateTable();
+        },
+
+            buildRequest: function () {
+                if (typeof this.url == "undefined") {
+                    console.error("typeof this.url == \"undefined\")");
+                }
+                    if(this.navmode=='URL_CALL'){
+                        this.computedURL = this.url+'/'+this.skip+'/'+this.limit;
+                    }
+                    if(this.navmode=='PARAMS_CALL'){
+                        this.computedURL = this.url;
+                        this.params['skip']=this.skip;
+                        this.params['limit']=this.limit;
+                    }
+
             }
         });
 
     </script>
 
 </polymer-element>
+<script src="../jquery/dist/jquery.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.js"></script>
