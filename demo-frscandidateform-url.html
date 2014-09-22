@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>knd-frscandidatelistform Demo</title>
+
+  <script src="../platform/platform.js"></script>
+
+    <link rel="stylesheet"
+          href="../bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet"
+          href="../bootstrap/dist/css/bootstrap-theme.css"/>
+    <script src="../jquery/dist/jquery.js"></script>
+    <script src="../bootstrap/dist/js/bootstrap.js"></script>
+  <link rel="import"
+        href="knd-frscandidateform.html">
+
+
+</head>
+<body unresolved>
+
+  <p>An example of using <code>&lt;knd-frscandidatelistform></code> using a distant dynamique URL (http://localhost:8080/frsboffice/rest/user/list) & :</p>
+
+
+  <knd-frscandidateform
+          url="http://localhost:8080/frsboffice/rest/user/id/538844f4e48bfd5966b9405a"
+          params='{"alt":"json","q":"chrome"}'
+          editURL="http://localhost:8080/frsboffice/rest/user/id/538844f4e48bfd5966b9405a/update"
+          ></knd-frscandidateform>
+
+
+</body>
+</html>
