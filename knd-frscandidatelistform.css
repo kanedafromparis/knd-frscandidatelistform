@@ -1,11 +1,11 @@
 /* To ensure your styling works under the Shadow DOM polyfill, see
    www.polymer-project.org/docs/polymer/styling.html#directives */
 
-
 .loginPassword {
     height: 24px;
     width: 64px;
 }
+
 .loginUsername {
     height: 24px;
     width: 128px;
@@ -20,14 +20,16 @@ core-icon-button {
     height: 24px;
     width: 24px;
 }
+
 core-icon-button:hover {
     fill: #fb8c00;
 }
 
 .top-logindiv {
-    height : auto;
+    height: auto;
 }
-.bottom-logindiv{
+
+.bottom-logindiv {
 
 }
 
@@ -47,3 +49,52 @@ paper-dialog paper-button {
 paper-button[autofocus] {
     color: #4285f4;
 }
+
+.box {
+    background: #eee;
+}
+
+.content {
+    margin: 10px;
+}
+
+section {
+    padding: 10px;
+}
+.calendar {
+    display: block;
+    margin: 4px;
+    max-width: 270px;
+    border: 1px solid #DDDDDD;
+    padding: 4px;
+    background: #FFFFFF; }
+.calendar table {
+    width: 100%;
+    border-collapse: collapse; }
+.calendar table > thead > tr > th, .calendar table > tbody > tr > td {
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 5px; }
+.calendar table > thead > tr > th {
+    font-size-adjust: 0.488; }
+.calendar table > tbody > tr > td.disabled, .calendar table > tbody > tr > td.off {
+    color: #999999; }
+.calendar table > tbody > tr > td.available:hover {
+    background: #EEEEEE; }
+.calendar table > tbody > tr > td.available + .calendar table > tbody > tr > td.available.start-date {
+    border-radius: 4px 0 0 4px; }
+.calendar table > tbody > tr > td.start-date.end-date {
+    border-radius: 4px; }
+.calendar table > tbody > tr > td.in-range {
+    background: #EBF4F8;
+    border-radius: 0; }
+.calendar table > tbody > tr > td.in-range + .calendar table > tbody > tr > td.in-range.end-date {
+    border-radius: 0 4px 4px 0; }
+.calendar table > tbody > tr > td.active, .calendar table > tbody > tr > td.active:hover {
+    background-color: #357EBD;
+    border-color: #3071a9;
+    color: #fff; }
