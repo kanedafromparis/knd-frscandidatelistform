@@ -1,0 +1,234 @@
+<link rel="import"
+      href="../polymer/polymer.html" xmlns="http://www.w3.org/1999/html"/>
+<link rel="import"
+      href="../core-ajax/core-ajax.html"/>
+
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icons/av-icons.html">
+<link rel="import" href="../core-icons/maps-icons.html">
+<link rel="import" href="../core-icons/image-icons.html">
+<link rel="import" href="../core-icons/social-icons.html">
+<link rel="import" href="../core-icons/editor-icons.html">
+<link rel="import" href="../core-selector/core-selector.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+
+<link rel="import" href="../polymer-date-picker/polymer-date-picker.html">
+
+<link rel="import"
+      href="../core-collapse/core-collapse.html"/>
+
+        <!-- ajax form -->
+<!-- @Todo clean import and bower.json file -->
+<script src="../underscore/underscore.js"></script>
+<script src="../underscore.string/lib/underscore.string.js"></script>
+<!-- Moment -->
+<script src="../moment/moment.js"></script>
+<script src="../moment-timezone/moment-timezone.js"></script>
+<script src="../moment-timezone/moment-timezone-utils.js"></script>
+<!-- bootstrap actions -->
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap-theme.css"/>
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap.css"/>
+<script src="../jquery/dist/jquery.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.js"></script>
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <knd-frscandidateinfocardmain
+           user=""
+           editURL=""
+    ></knd-frscandidateinfocardmain>
+
+@element knd-frscandidateinfocardmain
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://kanedafromparis.github.io/knd-frscandidateinfocardmain
+@Todo gestion du cross site (using headers ?)
+-->
+<polymer-element name="knd-frscandidateinfocardmain"
+                 attributes="user editURL readonly">
+    <link rel="stylesheet"
+          href="knd-frscandidatelistform.css"/>
+    <template>
+        <div>
+
+
+        </div>
+        <div>This is the frscandidateinfocard component </div>
+        <!--Principal-->
+        <section class="infocard">
+            <span><div class="cardtitle">Principal
+                <paper-icon-button id="togglePrincipalButton" icon="expand-more" on-click="{{toggleMain}}">
+                </paper-icon-button>
+                <paper-icon-button id="editMainButton" icon="editor:mode-edit" on-click="{{editMain}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="cancelMainButton" icon="close" on-click="{{cancelMain}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="submitMainButton" icon="check" on-click="{{submitMain}}" hidden="true">
+                </paper-icon-button>
+
+            </div></span>
+            <core-collapse id="collapseMain" class="cardcontent box">
+                <paper-input id="mainFirstName_input" floatingLabel label="Prénom" value="{{user.main.firstname}}" type="text" required="true" disabled="{{mainDisableSwitch}}"></paper-input>
+                <paper-input id="mainMiddleName_input" floatingLabel label="Prénom suplémentaire" value="{{user.main.middlenames}}" type="text" required="true" disabled="{{mainDisableSwitch}}"></paper-input>
+                <paper-input id="mainLastName_input" floatingLabel label="Nom" value="{{user.main.lastname}}" type="text" required="true" disabled="{{mainDisableSwitch}}"></paper-input>
+
+                <paper-radio-group id="mainGender_input" selected="{{user.main.gender}}">
+                    <paper-radio-button name="MALE" label="homme" disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                    <paper-radio-button name="FEMALE" label="femme" disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                </paper-radio-group>
+                <div>
+                    <polymer-date-picker-trigger selectedDate="2014-08-01" opened="false"></polymer-date-picker-trigger>
+                    <input id="mainBirthDateName_input" value="{{user.main.birthDate.$date}}"
+                           on-click="{{toggleDatePicker}}"
+                           readonly class="date"/>
+                    <polymer-date-picker
+                            id="datePicker"
+                            selectedDate="{{user.main.birthDate.$date}}"
+                            relatedTarget="{{$.mainBirthDateName_input}}"
+                            opened="false"></polymer-date-picker>
+
+                </div>
+                <div>
+                <paper-radio-group id="maritalStatus_input" selected="{{user.maritalStatus}}">
+                    <paper-radio-button name="UNKNOWN" label="inconnu / erreur de données" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="BACHELOR" label="celibataire" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="MARRIED" label="légalement séparé(e)" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="DIVORCED" label="divorcé(e)" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="LEGALLY_SEPARATED" label="marié(e)" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="WIDOW" label="veuf/veuve" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                </paper-radio-group>
+                </div>
+                <div>
+                <paper-radio-group id="education_input" selected="{{user.main.education}}">
+                    <paper-radio-button name="UNKNOWN" label="inconnu / erreur de données" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="PRIMARY_SCHOOL_ONLY" label="étudié en école primaire seulement (primary school only)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="HIGH_SCHOOL_NO_DEGREE" label="jusqu'en terminale sans le bac (high school, no degree).
+                    Vous" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="HIGH_SCHOOL_DEGREE" label="obtenu le bacalauréat (high school degree)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="VOCATIONAL_SCHOOL" label="assisté au cours d'un lycée ou d'enseigment professionnel (vocational school)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="SOME_UNIVERSITY_COURSES" label="suivi des cours universitaire sans obtenir un diplôme (some university courses)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="UNIVERSITY_DEGREE" label="une licence, étudié à l'université et obtenu un diplôme (university degree)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="SOME_GRADUATE_LEVEL_COURSES" label="etudié en troisième cycle (some graduate level courses)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="MASTER_DEGREE" label="obtenu un master / un diplôme de troisième cycle (master degree)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="SOME_DOCTORATE_LEVEL_COURSES" label="poursuivi une école doctorale (some doctorate level courses)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                    <paper-radio-button name="DOCTORATE_DEGREE" label="un doctorat. (doctorat)" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
+                </paper-radio-group>
+                </div>
+            </core-collapse>
+        </section>
+        <paper-toast id="toast" role="alert" text="{{sendingStatus}}">
+           <!-- <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div> -->
+        </paper-toast>
+        <!-- -->
+        <core-ajax
+                id="userDataUpdater"
+                auto="false"
+                url="{{editURL}}"
+                method="POST"
+                params="{{params}}"
+                handleAs="json"
+                on-core-response="{{handleResponse}}"></core-ajax>
+    </template>
+
+    <script>
+        _.mixin(_.str.exports());
+        Polymer('knd-frscandidateinfocardmain', {
+            publish: {
+                //user: null,
+                mainDisableSwitch : true,
+                backupUserEdit : null,
+                readonly : true,
+
+                observe: {
+                    user: 'validate'
+                }
+
+            },
+            ready: function () {
+
+            },
+            handleResponse: function (e) {
+                console.log("handleResponse : " + JSON.stringify(e.detail.response));
+                var nbDocumentUpdated = e.detail.response.result.N;
+                var message = ""+nbDocumentUpdated+" document(s) ont été mis à) jour";
+                this.sendingStatus = message;
+                this.$.toast.show();
+
+            },
+            toggleMain: function () {
+                this.$.collapseMain.toggle();
+                if (this.$.togglePrincipalButton.icon=="expand-more"){
+                    this.$.togglePrincipalButton.icon="expand-less";
+                    this.$.editMainButton.hidden=false;
+                }else{
+                    this.$.togglePrincipalButton.icon="expand-more";
+                    this.$.editMainButton.hidden=true;
+                    this.$.cancelMainButton.hidden=true;
+                    this.$.cancelMainButton.hidden=true;
+                    this.$.submitMainButton.hidden=true;
+                    this.cancelMain();
+                }
+
+            },
+            toggleDatePicker: function () {
+                if(!this.mainDisableSwitch){
+                    this.$.datePicker.toggle();
+                }
+            },
+            editMain: function () {
+                this.$.cancelMainButton.hidden=false;
+                this.$.submitMainButton.hidden=false;
+                this.$.editMainButton.hidden=true;
+                this.mainDisableSwitch = false;
+                this.backupUserEdit = JSON.parse(JSON.stringify(this.user));
+            },
+
+            cancelMain: function () {
+                this.$.cancelMainButton.hidden=true;
+                this.$.submitMainButton.hidden=true;
+                this.$.editMainButton.hidden=false;
+                this.mainDisableSwitch = true;
+                if(this.backupUserEdit != null){
+                    this.user = JSON.parse(JSON.stringify(this.backupUserEdit));
+                }
+            },
+
+            submitMain: function () {
+                this.$.cancelMainButton.hidden=true;
+                this.$.submitMainButton.hidden=true;
+                this.$.editMainButton.hidden=false;
+                //
+                //@Todo Clean this into datepicker
+                var m = moment(this.user.main.birthDate.$date);
+                this.user.main.birthDate.$date = m.format();
+                //
+                this.params = {};
+                this.params["user"]= JSON.stringify(this.user);
+                this.params["traceAction"]= "true";
+                this.$.userDataUpdater.go();
+
+
+            },
+
+
+            validate: function (oldValue, newValue) {
+                /**
+                 * Should refresh the list
+                 */
+                //console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+            }
+
+        });
+
+    </script>
+
+</polymer-element>
