@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>knd-frscandidatelistform Demo</title>
+
+  <script src="../platform/platform.js"></script>
+
+    <link rel="stylesheet"
+          href="../bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet"
+          href="../bootstrap/dist/css/bootstrap-theme.css"/>
+    <script src="../jquery/dist/jquery.js"></script>
+    <script src="../bootstrap/dist/js/bootstrap.js"></script>
+  <link rel="import"
+        href="knd-frscandidateform.html">
+
+
+</head>
+<body unresolved>
+
+  <p>An example of using <code>&lt;knd-frscandidatelistform></code>:</p>
+
+  <knd-frscandidateform
+          url="http://localhost:8000/knd-frscandidatelistform/sampleuser.json"
+          params='{"alt":"json","q":"chrome"}'
+          editurl="http://localhost:8000/knd-frscandidatelistform/index.html"
+          ></knd-frscandidateform>
+
+</body>
+</html>

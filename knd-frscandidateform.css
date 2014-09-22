@@ -128,3 +128,26 @@ paper-icon-button.red::shadow core-icon {
 core-selector paper-icon-button:not([active])::shadow core-icon {
     fill: #c9c9c9;
 }
+infocard {
+    border-width: thin;
+    border-style: solid;
+    border-color: black;
+
+    background: lightsteelblue;
+}
+
+cardtitle {
+    border-width: medium;
+    border-style: solid;
+    border-color: black;
+    background: darkgrey;
+    font-weight: bold;
+}
+cardcontent {
+    border-width: thin;
+    border-style: solid;
+    border-color: black;
+
+    background: inherit;
+    font-weight: lighter;
+}
