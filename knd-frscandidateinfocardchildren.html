@@ -1,0 +1,310 @@
+<link rel="import"
+      href="../polymer/polymer.html" xmlns="http://www.w3.org/1999/html"/>
+<link rel="import"
+      href="../core-ajax/core-ajax.html"/>
+
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icons/av-icons.html">
+<link rel="import" href="../core-icons/maps-icons.html">
+<link rel="import" href="../core-icons/image-icons.html">
+<link rel="import" href="../core-icons/social-icons.html">
+<link rel="import" href="../core-icons/editor-icons.html">
+<link rel="import" href="../core-selector/core-selector.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+
+<link rel="import" href="../polymer-date-picker/polymer-date-picker.html">
+
+<link rel="import"
+      href="../core-collapse/core-collapse.html"/>
+
+<!-- ajax form -->
+<!-- @Todo clean import and bower.json file -->
+<script src="../underscore/underscore.js"></script>
+<script src="../underscore.string/lib/underscore.string.js"></script>
+<!-- Moment -->
+<script src="../moment/moment.js"></script>
+<script src="../moment-timezone/moment-timezone.js"></script>
+<script src="../moment-timezone/moment-timezone-utils.js"></script>
+<!-- bootstrap actions -->
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap-theme.css"/>
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap.css"/>
+<script src="../jquery/dist/jquery.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.js"></script>
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <knd-frscandidateinfocardchildren
+           user=""
+           editURL=""
+    ></knd-frscandidateinfocardchildren>
+
+@element knd-frscandidateinfocardchildren
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://kanedafromparis.github.io/knd-frscandidateform
+@Todo gestion du cross site (using headers ?)
+-->
+<polymer-element name="knd-frscandidateinfocardchildren"
+                 attributes="user editURL readonly">
+<link rel="stylesheet"
+      href="knd-frscandidatelistform.css"/>
+<template>
+    <div>
+
+
+    </div>
+
+    <!--Children-->
+    <section class="infocard">
+            <span><div class="cardtitle">Enfants
+                <paper-icon-button id="toggleChildrenButton" icon="expand-more" on-click="{{toggleChildren}}">
+                </paper-icon-button>
+                <paper-icon-button id="editChildrenButton" icon="editor:mode-edit" on-click="{{editChildren}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="cancelChildrenButton" icon="close" on-click="{{cancelChildren}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="submitChildrenButton" icon="check" on-click="{{submitChildren}}" hidden="true">
+                </paper-icon-button>
+
+            </div></span>
+        <core-collapse id="collapseChildren" class="cardcontent box">
+            <div class="speparation"> Enfant(s)
+                <paper-icon-button id="submitAddChildButton" hidden?="{{childDisableSwitch}}" disabled="{{childDisableSwitch}}" icon="add" on-click="{{toggleAddChild}}"></paper-icon-button>:
+            </div>
+            <template repeat="{{ child,i in user.children }}">
+                <div>
+                    <div horizontal layout>
+                        <paper-icon-button id="child_{{i}}" hidden?="{{childDisableSwitch}}" disabled="{{childDisableSwitch}}" icon="delete" on-click="{{submitRemoveChild}}"></paper-icon-button>
+                        <paper-input floatingLabel label="Prénom" value="{{child.firstname}}" type="text" required="true" disabled="{{childDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Prénom suplémentaire" value="{{child.middlenames}}" type="text" disabled="{{childDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Nom" value="{{child.lastname}}" type="text" required="true" disabled="{{childDisableSwitch}}"></paper-input>
+                    </div>
+                    <div horizontal layout>
+                        <paper-input floatingLabel label="Lieu de Naissance" value="{{child.birthCity}}" type="text" required="true" disabled="{{childDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Région de Naissance" value="{{child.birthState}}" type="text" disabled="{{childDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Pays de Naissance (code exemple FR:France)" value="{{child.birthCountry}}" type="text" required="true"
+                                     disabled="{{childDisableSwitch}}"></paper-input>
+                    </div>
+                    <div horizontal layout>
+                    <paper-radio-group id="mainGender_input" selected="{{child.gender}}">
+                        <paper-radio-button name="MALE" label="homme" disabled="{{childDisableSwitch}}"></paper-radio-button>
+                        <paper-radio-button name="FEMALE" label="femme" disabled="{{childDisableSwitch}}"></paper-radio-button>
+                    </paper-radio-group>
+                        <div><span>Date de naissance</span>
+
+                            <polymer-date-picker-trigger selectedDate="2014-08-01" opened="false"></polymer-date-picker-trigger>
+                            <paper-input id="child__BirthDateName_input_{{i}}" value="{{child.birthDate.$date}}"
+                               on-click="{{toggleTargetDatePicker}}"
+                               readonly class="date"></paper-input>
+                            <polymer-date-picker
+                                    id="datePicker_{{i}}"
+                                    selectedDate="{{child.birthDate.$date}}"
+                                    relatedTarget="child__BirthDateName_input_{{i}}"
+                                    opened="false"></polymer-date-picker>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <paper-dialog id="addChildDialog" heading="Ajouter un enfant" transition="paper-dialog-transition-bottom">
+                <paper-icon-button id="cancelAddChildButton" icon="close" on-click="{{toggleAddChild}}"></paper-icon-button>
+                <paper-icon-button id="submitAddChildButton" icon="check" on-click="{{submitAddChild}}"></paper-icon-button>
+
+                <div horizontal layout>
+                    <paper-input floatingLabel label="Prénom" value="{{newChild.firstname}}" type="text" required="true" disabled="{{childDisableSwitch}}"></paper-input>
+                    <paper-input floatingLabel label="Prénom suplémentaire" value="{{newChild.middlenames}}" type="text" required="true"
+                                 disabled="{{childDisableSwitch}}"></paper-input>
+                    <paper-input id="mainLastName_input" floatingLabel label="Nom" value="{{newChild.lastname}}" type="text" required="true" disabled="{{childDisableSwitch}}"></paper-input>
+                </div>
+                <div horizontal layout>
+                    <paper-input floatingLabel label="Lieu de Naissance" value="{{newChild.birthCity}}" type="text" required="true" disabled="{{childDisableSwitch}}"></paper-input>
+                    <paper-input floatingLabel label="Région de Naissance" value="{{newChild.birthState}}" type="text" required="true"
+                                 disabled="{{childDisableSwitch}}"></paper-input>
+                    <paper-input floatingLabel label="Pays de Naissance (code exemple FR:France)" value="{{newChild.birthCountry}}" type="text" required="true"
+                                 disabled="{{childDisableSwitch}}"></paper-input>
+                </div>
+
+                <paper-radio-group selected="{{newChild.gender}}">
+                    <paper-radio-button name="MALE" label="homme" disabled="{{childDisableSwitch}}"></paper-radio-button>
+                    <paper-radio-button name="FEMALE" label="femme" disabled="{{childDisableSwitch}}"></paper-radio-button>
+                </paper-radio-group>
+                <div><span>Date de naissance</span>
+                    <polymer-date-picker-trigger selectedDate="2014-08-01" opened="false"></polymer-date-picker-trigger>
+                    <input id="newChildBirthDateName_input" value="{{newChild.birthDate.$date}}"
+                           on-click="{{toggleDatePicker}}"
+                           readonly class="date"/>
+                    <polymer-date-picker
+                            id="datePicker"
+                            selectedDate="{{newChild.birthDate.$date}}"
+                            relatedTarget="{{$.newChildBirthDateName_input}}"
+                            opened="false"></polymer-date-picker>
+                </div>
+            </paper-dialog>
+            <div></div>
+            <!-- Ce composant est mis ici car il est utiliser partout -->
+            <polymer-date-picker
+                    id="targetDatePicker"
+                    selectedDate="{{tempData}}"
+                    relatedTarget=""
+                    opened="false"></polymer-date-picker>
+        </core-collapse>
+    </section>
+    <paper-toast id="toast" role="alert" text="{{sendingStatus}}">
+        <!-- <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div> -->
+    </paper-toast>
+    <!-- -->
+    <core-ajax
+            id="childrenDataUpdater"
+            auto="false"
+            url="{{editURL}}"
+            method="POST"
+            params="{{params}}"
+            handleAs="json"
+            on-core-response="{{handleResponse}}"></core-ajax>
+</template>
+
+<script>
+    _.mixin(_.str.exports());
+    Polymer('knd-frscandidateinfocardchildren', {
+        publish: {
+            //user: null,
+            childDisableSwitch: true,
+            backupUserEdit: null,
+            readonly: true,
+            newChild:{},
+            tempData:null,
+            tempChildIndex:null,
+
+            observe: {
+                user: 'validate',
+                tempData: 'updateChildBirthDate'
+            }
+
+        },
+        ready: function () {
+
+        },
+        handleResponse: function (e) {
+            console.log("handleResponse : " + JSON.stringify(e.detail.response));
+            var nbDocumentUpdated = e.detail.response.result.N;
+            var message = "" + nbDocumentUpdated + " document(s) ont été mis à) jour";
+            this.sendingStatus = message;
+            this.$.toast.show();
+
+        },
+        toggleChildren: function () {
+            this.$.collapseChildren.toggle();
+            if (this.$.toggleChildrenButton.icon == "expand-more") {
+                this.$.toggleChildrenButton.icon = "expand-less";
+                this.$.editChildrenButton.hidden = false;
+            } else {
+                this.cancelChildren();
+                this.$.toggleChildrenButton.icon = "expand-more";
+                this.$.editChildrenButton.hidden = true;
+                this.$.cancelChildrenButton.hidden = true;
+                this.$.cancelChildrenButton.hidden = true;
+                this.$.submitChildrenButton.hidden = true;
+
+            }
+
+        },
+        toggleDatePicker: function () {
+            if (!this.childDisableSwitch) {
+                this.$.datePicker.toggle();
+                this.$.datePicker.selectedDate = this.newChild.birthDate.$date;
+                this.$.datePicker.relatedTarget = this.$.newChildBirthDateName_input;
+            }
+        },
+        toggleTargetDatePicker: function (e) {
+            if (!this.childDisableSwitch) {
+                this.$.targetDatePicker.toggle();
+                this.tempChildIndex = e.currentTarget.id.substr("child__BirthDateName_input_".length);
+                var temp = this.user.children[this.tempChildIndex].birthDate.$date;
+                //string is final, not an object otherwise it would loop
+                this.$.targetDatePicker.selectedDate = temp;
+                this.$.targetDatePicker.relatedTarget = e.currentTarget;
+            }
+        },
+        updateChildBirthDate: function (oldVal,newVal) {
+            if(this.tempChildIndex) {
+                this.user.children[this.tempChildIndex].birthDate.$date = this.$.targetDatePicker.selectedDate;
+            }
+        },
+        editChildren: function () {
+            this.$.cancelChildrenButton.hidden = false;
+            this.$.submitChildrenButton.hidden = false;
+            this.$.editChildrenButton.hidden = true;
+            this.childDisableSwitch = false;
+            this.backupUserEdit = JSON.parse(JSON.stringify(this.user));
+        },
+
+        cancelChildren: function () {
+            this.$.cancelChildrenButton.hidden = true;
+            this.$.submitChildrenButton.hidden = true;
+            this.$.editChildrenButton.hidden = false;
+            this.childDisableSwitch = true;
+            if (this.backupUserEdit != null) {
+                this.user = JSON.parse(JSON.stringify(this.backupUserEdit));
+            }
+        },
+
+        toggleAddChild: function () {
+            this.$.addChildDialog.toggle();
+            if (typeof this.newChild.birthDate == "undefined"){
+                this.newChild.birthDate = {};
+                this.newChild.birthDate.$date = "2010-01-01T00:00:00";
+            }
+        },
+        submitAddChild: function () {
+            var m =  moment(this.newChild.birthDate.$date);
+            this.newChild.birthDate.$date = m.format();
+            var child = JSON.parse(JSON.stringify(this.newChild));
+
+            this.user.children.push(this.child);
+            /**@Todo Check this*/
+            this.$.addChildDialog.toggle();
+        },
+        submitRemoveChild: function (e) {
+            var index = e.currentTarget.id.substr("child_".length);
+            this.user.children.splice(index, 1);
+        },
+
+        submitChildren: function () {
+            this.$.cancelChildrenButton.hidden = true;
+            this.$.submitChildrenButton.hidden = true;
+            this.$.editChildrenButton.hidden = false;
+            //
+
+            //@Todo Clean this into datepicker
+            var m = moment(this.user.children.birthDate.$date);
+            //this.user.children.birthDate.$date = m.format();
+            //
+            this.params = {};
+            this.params["user"] = JSON.stringify(this.user);
+            this.params["traceAction"] = "true";
+            this.$.childrenDataUpdater.go();
+
+
+        },
+
+
+        validate: function (oldValue, newValue) {
+            /**
+             * Should refresh the list
+             */
+            //console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+        }
+
+    });
+
+</script>
+
+</polymer-element>

@@ -1,0 +1,276 @@
+<link rel="import"
+      href="../polymer/polymer.html" xmlns="http://www.w3.org/1999/html"/>
+<link rel="import"
+      href="../core-ajax/core-ajax.html"/>
+
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icons/av-icons.html">
+<link rel="import" href="../core-icons/maps-icons.html">
+<link rel="import" href="../core-icons/image-icons.html">
+<link rel="import" href="../core-icons/social-icons.html">
+<link rel="import" href="../core-icons/editor-icons.html">
+<link rel="import" href="../core-selector/core-selector.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-dialog/paper-dialog-transition.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+
+<link rel="import" href="../polymer-date-picker/polymer-date-picker.html">
+
+<link rel="import"
+      href="../core-collapse/core-collapse.html"/>
+
+        <!-- ajax form -->
+<!-- @Todo clean import and bower.json file -->
+<script src="../underscore/underscore.js"></script>
+<script src="../underscore.string/lib/underscore.string.js"></script>
+<!-- Moment -->
+<script src="../moment/moment.js"></script>
+<script src="../moment-timezone/moment-timezone.js"></script>
+<script src="../moment-timezone/moment-timezone-utils.js"></script>
+<!-- bootstrap actions -->
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap-theme.css"/>
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap.css"/>
+<script src="../jquery/dist/jquery.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.js"></script>
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <knd-frscandidateinfocardcontact
+           user=""
+           editURL=""
+    ></knd-frscandidateinfocardcontact>
+
+@element knd-frscandidateinfocardcontact
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://kanedafromparis.github.io/knd-frscandidateforme
+@Todo gestion du cross site (using headers ?)
+-->
+<polymer-element name="knd-frscandidateinfocardcontact"
+                 attributes="user editURL readonly">
+    <link rel="stylesheet"
+          href="knd-frscandidatelistform.css"/>
+    <template>
+        <div>
+
+
+        </div>
+
+        <!--Contact-->
+        <section class="infocard">
+            <span><div class="cardtitle">Contact
+                <paper-icon-button id="toggleContactButton" icon="expand-more" on-click="{{toggleContact}}">
+                </paper-icon-button>
+                <paper-icon-button id="editContactButton" icon="editor:mode-edit" on-click="{{editContact}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="cancelContactButton" icon="close" on-click="{{cancelContact}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="submitContactButton" icon="check" on-click="{{submitContact}}" hidden="true">
+                </paper-icon-button>
+
+            </div></span>
+            <core-collapse id="collapseContact" class="cardcontent box">
+
+
+                <div class="speparation"> Contact <paper-icon-button id="submitAddPhoneButton" icon="add" on-click="{{toggleAddContact}}" disabled="{{contactDisableSwitch}}" hidden?="{{contactDisableSwitch}}"></paper-icon-button>: </div>
+                <template repeat="{{ contact,i in user.contacts }}">
+                    <div horizontal layout>
+                    <paper-icon-button id="contact_{{i}}" icon="delete" classe="small" on-click="{{submitRemoveContact}}" disabled="{{contactDisableSwitch}}" hidden?="{{contactDisableSwitch}}">
+                    </paper-icon-button>
+                    <paper-input class="namecontact" floatingLabel label="Prénom Nom" value="{{contact.name}}" type="text" required="true"
+                                 disabled="{{contactDisableSwitch}}"></paper-input>
+                    <paper-input class="phonecontact" floatingLabel label="Numéro" value="{{contact.phone}}" type="tel" required="true"
+                                 disabled="{{contactDisableSwitch}}"></paper-input></div>
+                </template>
+                <paper-dialog id="addContactDialog" heading="Ajouter un Contact" transition="paper-dialog-transition-bottom">
+                    <paper-icon-button id="cancelAddContactButton" icon="close" on-click="{{toggleAddContact}}">         </paper-icon-button>
+                    <paper-icon-button id="submitAddContactButton" icon="check" on-click="{{submitAddContact}}"></paper-icon-button>
+                    <paper-input floatingLabel label="Prénom Nom" value="{{newNameContact}}" type="text" disabled="{{contactDisableSwitch}}"></paper-input>
+                    <paper-input floatingLabel label="Numéro" value="{{newPhoneContact}}" type="tel" disabled="{{contactDisableSwitch}}"></paper-input>
+                    </paper-icon-button>
+                </paper-dialog>
+
+                <div class="speparation"> Téléphones <paper-icon-button id="submitAddPhoneButton" icon="add" on-click="{{toggleAddPhone}}" disabled="{{contactDisableSwitch}}" hidden?="{{contactDisableSwitch}}"></paper-icon-button>: </div>
+                <template repeat="{{ phone,i in user.phones }}">
+                    <div horizontal layout>
+                        <paper-icon-button id="phone_{{i}}" icon="delete" on-click="{{submitRemovePhone}}" disabled="{{contactDisableSwitch}}" hidden?="{{contactDisableSwitch}}"></paper-icon-button>
+                        <paper-input floatingLabel label="Type de numéro" value="{{phone.type}}" type="text" disabled="{{contactDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="numéro" value="{{phone.number}}" type="tel" disabled="{{contactDisableSwitch}}"></paper-input></div>
+                </template>
+                <paper-dialog id="addPhoneDialog" heading="Ajouter un numéro de téléphone" transition="paper-dialog-transition-bottom">
+                    <paper-icon-button id="cancelAddPhoneButton" icon="close" on-click="{{toggleAddPhone}}"></paper-icon-button>
+                    <paper-icon-button id="submitAddPhoneButton" icon="check" on-click="{{submitAddPhone}}"></paper-icon-button>
+                    <paper-input floatingLabel label="Type de numéro" value="{{newPhoneType}}" type="text" disabled="{{contactDisableSwitch}}"></paper-input>
+                    <paper-input floatingLabel label="numéro" value="{{newPhoneNumber}}" type="tel" disabled="{{contactDisableSwitch}}"></paper-input>
+                </paper-dialog>
+                <div></div>
+
+
+                <div class="speparation">Email  <paper-icon-button id="submitAddEmailButton" icon="add" on-click="{{toggleAddEmail}}" disabled="{{contactDisableSwitch}}" hidden?="{{contactDisableSwitch}}"></paper-icon-button>: </div>
+                <template repeat="{{ email,i in user.emails }}">
+                    <div horizontal layout>
+                        <paper-icon-button id="email_{{i}}" icon="delete" on-click="{{submitRemoveEmail}}" hidden?="{{contactDisableSwitch}}"></paper-icon-button>
+                        <paper-input floatingLabel label="E-Mail" value="{{email}}" type="email" disabled="{{contactDisableSwitch}}"></paper-input>
+                    </div>
+                </template>
+                <paper-dialog id="addEmailDialog" heading="Ajouter un Email" transition="paper-dialog-transition-bottom">
+                <paper-icon-button id="cancelAddEmailButton" icon="close" on-click="{{toggleAddEmail}}"></paper-icon-button>
+                    <paper-icon-button id="submitAddEmailButton" icon="check" on-click="{{submitAddEmail}}"></paper-icon-button>
+                <paper-input id="addEmail_input" floatingLabel label="E-Mail" value="{{addingEmail}}" type="email" disabled="{{contactDisableSwitch}}"></paper-input>
+
+                    </paper-dialog>
+
+            </core-collapse>
+        </section>
+        <paper-toast id="toast" role="alert" text="{{sendingStatus}}">
+           <!-- <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div> -->
+        </paper-toast>
+        <!-- -->
+        <core-ajax
+                id="contactDataUpdater"
+                auto="false"
+                url="{{editURL}}"
+                method="POST"
+                params="{{params}}"
+                handleAs="json"
+                on-core-response="{{handleResponse}}"></core-ajax>
+    </template>
+
+    <script>
+        _.mixin(_.str.exports());
+        Polymer('knd-frscandidateinfocardcontact', {
+            publish: {
+                //user: null,
+                contactDisableSwitch : true,
+                backupUserEdit : null,
+                readonly : true,
+
+                observe: {
+                    user: 'validate',
+                }
+
+            },
+            ready: function () {
+
+            },
+            handleResponse: function (e) {
+                console.log("handleResponse : " + JSON.stringify(e.detail.response));
+                var nbDocumentUpdated = e.detail.response.result.N;
+                var message = ""+nbDocumentUpdated+" document(s) ont été mis à jour";
+                this.sendingStatus = message;
+                this.$.toast.show();
+
+            },
+            toggleDatePicker: function () {
+                if(!this.contactDisableSwitch){
+                    this.$.datePicker.toggle();
+                }
+            },
+            toggleContact: function () {
+                this.$.collapseContact.toggle();
+                if (this.$.toggleContactButton.icon=="expand-more"){
+                    this.$.toggleContactButton.icon="expand-less";
+                    this.$.editContactButton.hidden=false;
+                }else{
+                    this.cancelContact();
+                    this.$.toggleContactButton.icon="expand-more";
+                    this.$.editContactButton.hidden=true;
+                    this.$.cancelContactButton.hidden=true;
+                    this.$.cancelContactButton.hidden=true;
+                    this.$.submitContactButton.hidden=true;
+                }
+            },
+            editContact: function () {
+                this.$.cancelContactButton.hidden=false;
+                this.$.submitContactButton.hidden=false;
+                this.$.editContactButton.hidden=true;
+                this.contactDisableSwitch = false;
+                this.backupUserEdit = JSON.parse(JSON.stringify(this.user));
+            },
+            cancelContact: function () {
+                this.$.cancelContactButton.hidden=true;
+                this.$.submitContactButton.hidden=true;
+                this.$.editContactButton.hidden=false;
+                this.contactDisableSwitch = true;
+                if(this.backupUserEdit != null){
+                    this.user = JSON.parse(JSON.stringify(this.backupUserEdit));
+                }
+            },
+            toggleAddPhone: function () {
+                this.$.addPhoneDialog.toggle();
+            },
+            submitAddPhone: function () {
+                var phone = {};
+                phone['type'] = this.newPhoneType;
+                phone['number'] = this.newPhoneNumber;
+                this.user.phones.push(phone);
+                /**@Todo Check this*/
+                 this.$.addPhoneDialog.toggle();
+            },
+            submitRemovePhone: function (e) {
+                var index = e.currentTarget.id.substr("phone_".length);
+                this.user.phones.splice(index, 1);
+            },
+            toggleAddEmail: function () {
+                this.$.addEmailDialog.toggle();
+            },
+            submitAddEmail: function () {
+                this.user.emails.push(this.addingEmail);
+                this.$.addEmailDialog.toggle();
+            },
+            submitRemoveEmail: function (e) {
+                var index = e.currentTarget.id.substr("email_".length);
+                this.user.emails.splice(index, 1);
+
+            },
+            toggleAddContact: function () {
+                this.$.addContactDialog.toggle();
+            },
+            submitAddContact: function () {
+                var contact = {};
+                contact['name'] = this.newNameContact;
+                contact['phone'] = this.newPhoneContact;
+                this.user.contacts.push(contact);
+                this.$.addContactDialog.toggle();
+            },
+            submitRemoveContact: function (e) {
+                var index = e.currentTarget.id.substr("contact_".length);
+                this.user.contacts.splice(index, 1);
+
+            },
+
+            submitContact: function () {
+                this.$.cancelContactButton.hidden=true;
+                this.$.submitContactButton.hidden=true;
+                this.$.editContactButton.hidden=false;
+                this.contactDisableSwitch = true;
+                this.params = {};
+                this.params["user"]= JSON.stringify(this.user);
+                this.params["traceAction"]= "true";
+                this.$.contactDataUpdater.go();
+
+
+            },
+
+
+            validate: function (oldValue, newValue) {
+                /**
+                 * Should refresh the list
+                 */
+                //console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+            }
+
+        });
+
+    </script>
+
+</polymer-element>

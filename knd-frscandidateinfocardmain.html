@@ -21,7 +21,7 @@
 <link rel="import"
       href="../core-collapse/core-collapse.html"/>
 
-        <!-- ajax form -->
+<!-- ajax form -->
 <!-- @Todo clean import and bower.json file -->
 <script src="../underscore/underscore.js"></script>
 <script src="../underscore.string/lib/underscore.string.js"></script>
@@ -62,7 +62,6 @@ Element providing solution to no problem in particular.
 
 
         </div>
-        <div>This is the frscandidateinfocard component </div>
         <!--Principal-->
         <section class="infocard">
             <span><div class="cardtitle">Principal
@@ -77,15 +76,25 @@ Element providing solution to no problem in particular.
 
             </div></span>
             <core-collapse id="collapseMain" class="cardcontent box">
+                <!-- @Todo utiliser template if {{mainDisableSwitch}} pour différentier plus la visualisation de l'édition -->
+                <div horizontal layout>
                 <paper-input id="mainFirstName_input" floatingLabel label="Prénom" value="{{user.main.firstname}}" type="text" required="true" disabled="{{mainDisableSwitch}}"></paper-input>
-                <paper-input id="mainMiddleName_input" floatingLabel label="Prénom suplémentaire" value="{{user.main.middlenames}}" type="text" required="true" disabled="{{mainDisableSwitch}}"></paper-input>
+                <paper-input id="mainMiddleName_input" floatingLabel label="Prénom suplémentaire" value="{{user.main.middlenames}}" type="text" required="true"
+                             disabled="{{mainDisableSwitch}}"></paper-input>
                 <paper-input id="mainLastName_input" floatingLabel label="Nom" value="{{user.main.lastname}}" type="text" required="true" disabled="{{mainDisableSwitch}}"></paper-input>
+            </div>
+                <div horizontal layout>
+                <paper-input id="mainBirthCity_input" floatingLabel label="Lieu de Naissance" value="{{user.main.birthCity}}" type="text" required="true" disabled="{{mainDisableSwitch}}"></paper-input>
+                <paper-input id="mainBirthState_input" floatingLabel label="Région de Naissance" value="{{user.main.birthState}}" type="text" required="true"
+                             disabled="{{mainDisableSwitch}}"></paper-input>
+                <paper-input id="mainBirthCountry_input" floatingLabel label="Pays de Naissance (code exemple FR:France)" value="{{user.main.birthCountry}}" type="text" required="true" disabled="{{mainDisableSwitch}}"></paper-input>
+            </div>
 
                 <paper-radio-group id="mainGender_input" selected="{{user.main.gender}}">
                     <paper-radio-button name="MALE" label="homme" disabled="{{mainDisableSwitch}}"></paper-radio-button>
                     <paper-radio-button name="FEMALE" label="femme" disabled="{{mainDisableSwitch}}"></paper-radio-button>
                 </paper-radio-group>
-                <div>
+                <div><span>Date de naissance</span>
                     <polymer-date-picker-trigger selectedDate="2014-08-01" opened="false"></polymer-date-picker-trigger>
                     <input id="mainBirthDateName_input" value="{{user.main.birthDate.$date}}"
                            on-click="{{toggleDatePicker}}"
@@ -97,36 +106,57 @@ Element providing solution to no problem in particular.
                             opened="false"></polymer-date-picker>
 
                 </div>
-                <div>
-                <paper-radio-group id="maritalStatus_input" selected="{{user.maritalStatus}}">
-                    <paper-radio-button name="UNKNOWN" label="inconnu / erreur de données" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="BACHELOR" label="celibataire" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="MARRIED" label="légalement séparé(e)" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="DIVORCED" label="divorcé(e)" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="LEGALLY_SEPARATED" label="marié(e)" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="WIDOW" label="veuf/veuve" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                </paper-radio-group>
+                <div horizontal layout>
+                    <paper-radio-group id="maritalStatus_input" selected="{{user.maritalStatus}}">
+                        <paper-radio-button name="UNKNOWN" label="inconnu / erreur de données" disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="BACHELOR" label="celibataire" disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="MARRIED" label="marié(e)" disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="DIVORCED" label="divorcé(e)" disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="LEGALLY_SEPARATED" label="légalement séparé(e)" disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="WIDOW" label="veuf/veuve" disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                    </paper-radio-group>
                 </div>
-                <div>
-                <paper-radio-group id="education_input" selected="{{user.main.education}}">
-                    <paper-radio-button name="UNKNOWN" label="inconnu / erreur de données" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="PRIMARY_SCHOOL_ONLY" label="étudié en école primaire seulement (primary school only)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="HIGH_SCHOOL_NO_DEGREE" label="jusqu'en terminale sans le bac (high school, no degree).
-                    Vous" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="HIGH_SCHOOL_DEGREE" label="obtenu le bacalauréat (high school degree)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="VOCATIONAL_SCHOOL" label="assisté au cours d'un lycée ou d'enseigment professionnel (vocational school)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="SOME_UNIVERSITY_COURSES" label="suivi des cours universitaire sans obtenir un diplôme (some university courses)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="UNIVERSITY_DEGREE" label="une licence, étudié à l'université et obtenu un diplôme (university degree)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="SOME_GRADUATE_LEVEL_COURSES" label="etudié en troisième cycle (some graduate level courses)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="MASTER_DEGREE" label="obtenu un master / un diplôme de troisième cycle (master degree)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="SOME_DOCTORATE_LEVEL_COURSES" label="poursuivi une école doctorale (some doctorate level courses)." disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                    <paper-radio-button name="DOCTORATE_DEGREE" label="un doctorat. (doctorat)" disabled="{{mainDisableSwitch}}"></paper-radio-button><br />
-                </paper-radio-group>
+                <div horizontal layout>
+                    <paper-radio-group id="education_input" selected="{{user.main.education}}">
+                        <paper-radio-button name="UNKNOWN" label="inconnu / erreur de données" disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="PRIMARY_SCHOOL_ONLY" label="étudié en école primaire seulement (primary school only)." disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="HIGH_SCHOOL_NO_DEGREE" label="jusqu'en terminale sans le bac (high school, no degree).
+                    Vous" disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="HIGH_SCHOOL_DEGREE" label="obtenu le bacalauréat (high school degree)." disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="VOCATIONAL_SCHOOL" label="assisté au cours d'un lycée ou d'enseigment professionnel (vocational school)."
+                                            disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="SOME_UNIVERSITY_COURSES" label="suivi des cours universitaire sans obtenir un diplôme (some university courses)."
+                                            disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="UNIVERSITY_DEGREE" label="une licence, étudié à l'université et obtenu un diplôme (university degree)."
+                                            disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="SOME_GRADUATE_LEVEL_COURSES" label="etudié en troisième cycle (some graduate level courses)." disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="MASTER_DEGREE" label="obtenu un master / un diplôme de troisième cycle (master degree)." disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="SOME_DOCTORATE_LEVEL_COURSES" label="poursuivi une école doctorale (some doctorate level courses)."
+                                            disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="DOCTORATE_DEGREE" label="un doctorat. (doctorat)" disabled="{{mainDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                    </paper-radio-group>
                 </div>
             </core-collapse>
         </section>
         <paper-toast id="toast" role="alert" text="{{sendingStatus}}">
-           <!-- <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div> -->
+            <!-- <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div> -->
         </paper-toast>
         <!-- -->
         <core-ajax
@@ -144,12 +174,12 @@ Element providing solution to no problem in particular.
         Polymer('knd-frscandidateinfocardmain', {
             publish: {
                 //user: null,
-                mainDisableSwitch : true,
-                backupUserEdit : null,
-                readonly : true,
-
+                mainDisableSwitch: true,
+                backupUserEdit: null,
+                readonly: true,
                 observe: {
                     user: 'validate'
+
                 }
 
             },
@@ -159,61 +189,62 @@ Element providing solution to no problem in particular.
             handleResponse: function (e) {
                 console.log("handleResponse : " + JSON.stringify(e.detail.response));
                 var nbDocumentUpdated = e.detail.response.result.N;
-                var message = ""+nbDocumentUpdated+" document(s) ont été mis à) jour";
+                var message = "" + nbDocumentUpdated + " document(s) ont été mis à) jour";
                 this.sendingStatus = message;
                 this.$.toast.show();
 
             },
             toggleMain: function () {
                 this.$.collapseMain.toggle();
-                if (this.$.togglePrincipalButton.icon=="expand-more"){
-                    this.$.togglePrincipalButton.icon="expand-less";
-                    this.$.editMainButton.hidden=false;
-                }else{
-                    this.$.togglePrincipalButton.icon="expand-more";
-                    this.$.editMainButton.hidden=true;
-                    this.$.cancelMainButton.hidden=true;
-                    this.$.cancelMainButton.hidden=true;
-                    this.$.submitMainButton.hidden=true;
+                if (this.$.togglePrincipalButton.icon == "expand-more") {
+                    this.$.togglePrincipalButton.icon = "expand-less";
+                    this.$.editMainButton.hidden = false;
+                } else {
                     this.cancelMain();
+                    this.$.togglePrincipalButton.icon = "expand-more";
+                    this.$.editMainButton.hidden = true;
+                    this.$.cancelMainButton.hidden = true;
+                    this.$.submitMainButton.hidden = true;
+
                 }
 
             },
             toggleDatePicker: function () {
-                if(!this.mainDisableSwitch){
+                if (!this.mainDisableSwitch) {
                     this.$.datePicker.toggle();
                 }
             },
             editMain: function () {
-                this.$.cancelMainButton.hidden=false;
-                this.$.submitMainButton.hidden=false;
-                this.$.editMainButton.hidden=true;
+                this.$.cancelMainButton.hidden = false;
+                this.$.submitMainButton.hidden = false;
+                this.$.editMainButton.hidden = true;
                 this.mainDisableSwitch = false;
                 this.backupUserEdit = JSON.parse(JSON.stringify(this.user));
             },
 
             cancelMain: function () {
-                this.$.cancelMainButton.hidden=true;
-                this.$.submitMainButton.hidden=true;
-                this.$.editMainButton.hidden=false;
+                this.$.cancelMainButton.hidden = true;
+                this.$.submitMainButton.hidden = true;
+                this.$.editMainButton.hidden = false;
                 this.mainDisableSwitch = true;
-                if(this.backupUserEdit != null){
+                if (this.backupUserEdit != null) {
                     this.user = JSON.parse(JSON.stringify(this.backupUserEdit));
                 }
             },
 
             submitMain: function () {
-                this.$.cancelMainButton.hidden=true;
-                this.$.submitMainButton.hidden=true;
-                this.$.editMainButton.hidden=false;
+                this.$.cancelMainButton.hidden = true;
+                this.$.submitMainButton.hidden = true;
+                this.$.editMainButton.hidden = false;
+                this.mainDisableSwitch = true;
                 //
                 //@Todo Clean this into datepicker
                 var m = moment(this.user.main.birthDate.$date);
                 this.user.main.birthDate.$date = m.format();
                 //
                 this.params = {};
-                this.params["user"]= JSON.stringify(this.user);
-                this.params["traceAction"]= "true";
+                this.params["user"] = JSON.stringify(this.user);
+                this.params["traceAction"] = "true";
                 this.$.userDataUpdater.go();
 
 
@@ -225,6 +256,13 @@ Element providing solution to no problem in particular.
                  * Should refresh the list
                  */
                 //console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+            },
+            checkSpouse: function (oldValue, newValue) {
+                if (newValue !== 'MARRIED') {
+                    /* @Todo Suprimer l'époux au changement de status */
+                    this.user.spouse = {};
+                    this.user.spouse['parents'] = [];
+                }
             }
 
         });

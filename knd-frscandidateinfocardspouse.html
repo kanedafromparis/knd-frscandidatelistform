@@ -1,0 +1,255 @@
+<link rel="import"
+      href="../polymer/polymer.html" xmlns="http://www.w3.org/1999/html"/>
+<link rel="import"
+      href="../core-ajax/core-ajax.html"/>
+
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icons/av-icons.html">
+<link rel="import" href="../core-icons/maps-icons.html">
+<link rel="import" href="../core-icons/image-icons.html">
+<link rel="import" href="../core-icons/social-icons.html">
+<link rel="import" href="../core-icons/editor-icons.html">
+<link rel="import" href="../core-selector/core-selector.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+
+<link rel="import" href="../polymer-date-picker/polymer-date-picker.html">
+
+<link rel="import"
+      href="../core-collapse/core-collapse.html"/>
+
+<!-- ajax form -->
+<!-- @Todo clean import and bower.json file -->
+<script src="../underscore/underscore.js"></script>
+<script src="../underscore.string/lib/underscore.string.js"></script>
+<!-- Moment -->
+<script src="../moment/moment.js"></script>
+<script src="../moment-timezone/moment-timezone.js"></script>
+<script src="../moment-timezone/moment-timezone-utils.js"></script>
+<!-- bootstrap actions -->
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap-theme.css"/>
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap.css"/>
+<script src="../jquery/dist/jquery.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.js"></script>
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <knd-frscandidateinfocardspouse
+           user=""
+           editURL=""
+    ></knd-frscandidateinfocardspouse>
+
+@element knd-frscandidateinfocardspouse
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://kanedafromparis.github.io/knd-frscandidateinfocardspouse
+@Todo gestion du cross site (using headers ?)
+-->
+<polymer-element name="knd-frscandidateinfocardspouse"
+                 attributes="user editURL readonly">
+    <link rel="stylesheet"
+          href="knd-frscandidatelistform.css"/>
+    <template>
+        <div>
+
+
+        </div>
+
+        <!--Spouse-->
+        <section class="infocard">
+            <span><div class="cardtitle">Epoux
+                <paper-icon-button id="toggleSpouseButton" icon="expand-more" on-click="{{toggleSpouse}}">
+                </paper-icon-button>
+                <paper-icon-button id="editSpouseButton" icon="editor:mode-edit" on-click="{{editSpouse}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="cancelSpouseButton" icon="close" on-click="{{cancelSpouse}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="submitSpouseButton" icon="check" on-click="{{submitSpouse}}" hidden="true">
+                </paper-icon-button>
+
+            </div></span>
+            <core-collapse id="collapseSpouse" class="cardcontent box">
+                <div horizontal layout>
+                    <paper-input id="SpouseFirstName_input" floatingLabel label="Prénom" value="{{user.spouse.firstname}}" type="text" required="true" disabled="{{spouseDisableSwitch}}"></paper-input>
+                    <paper-input id="SpouseMiddleName_input" floatingLabel label="Prénom suplémentaire" value="{{user.spouse.middlenames}}" type="text" required="true"
+                                 disabled="{{spouseDisableSwitch}}"></paper-input>
+                    <paper-input id="SpouseLastName_input" floatingLabel label="Nom" value="{{user.spouse.lastname}}" type="text" required="true" disabled="{{spouseDisableSwitch}}"></paper-input>
+                </div>
+                <div horizontal layout>
+                    <paper-input id="spouseBirthCity_input" floatingLabel label="Lieu de Naissance" value="{{user.spouse.birthCity}}" type="text" required="true"
+                                 disabled="{{spouseDisableSwitch}}"></paper-input>
+                    <paper-input id="spouseBirthState_input" floatingLabel label="Région de Naissance" value="{{user.spouse.birthState}}" type="text"
+                                 disabled="{{spouseDisableSwitch}}"></paper-input>
+                    <paper-input id="spouseBirthCountry_input" floatingLabel label="Pays de Naissance (code exemple FR:France)" value="{{user.spouse.birthCountry}}" type="text" required="true"
+                                 disabled="{{spouseDisableSwitch}}"></paper-input>
+                </div>
+                <div>
+                    <paper-radio-group id="SpouseGender_input" selected="{{user.spouse.gender}}">
+                        <paper-radio-button name="MALE" label="homme" disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <paper-radio-button name="FEMALE" label="femme" disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                    </paper-radio-group>
+                </div>
+                <div>
+                    <polymer-date-picker-trigger selectedDate="2014-08-01" opened="false"></polymer-date-picker-trigger>
+                    <input id="SpouseBirthDateName_input" value="{{user.spouse.birthDate.$date}}"
+                           on-click="{{toggleDatePicker}}"
+                           readonly class="date"/>
+                    <polymer-date-picker
+                            id="datePicker"
+                            selectedDate="{{user.spouse.birthDate.$date}}"
+                            relatedTarget="{{$.SpouseBirthDateName_input}}"
+                            opened="false"></polymer-date-picker>
+
+                </div>
+
+                <div horizontal layout>
+                    <paper-radio-group id="education_input" selected="{{user.spouse.education}}">
+                        <paper-radio-button name="UNKNOWN" label="inconnu / erreur de données" disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="PRIMARY_SCHOOL_ONLY" label="étudié en école primaire seulement (primary school only)." disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="HIGH_SCHOOL_NO_DEGREE" label="jusqu'en terminale sans le bac (high school, no degree).
+                    Vous" disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="HIGH_SCHOOL_DEGREE" label="obtenu le bacalauréat (high school degree)." disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="VOCATIONAL_SCHOOL" label="assisté au cours d'un lycée ou d'enseigment professionnel (vocational school)."
+                                            disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="SOME_UNIVERSITY_COURSES" label="suivi des cours universitaire sans obtenir un diplôme (some university courses)."
+                                            disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="UNIVERSITY_DEGREE" label="une licence, étudié à l'université et obtenu un diplôme (university degree)."
+                                            disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="SOME_GRADUATE_LEVEL_COURSES" label="etudié en troisième cycle (some graduate level courses)."
+                                            disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="MASTER_DEGREE" label="obtenu un master / un diplôme de troisième cycle (master degree)." disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="SOME_DOCTORATE_LEVEL_COURSES" label="poursuivi une école doctorale (some doctorate level courses)."
+                                            disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                        <paper-radio-button name="DOCTORATE_DEGREE" label="un doctorat. (doctorat)" disabled="{{spouseDisableSwitch}}"></paper-radio-button>
+                        <br/>
+                    </paper-radio-group>
+                </div>
+            </core-collapse>
+        </section>
+        <paper-toast id="toast" role="alert" text="{{sendingStatus}}">
+            <!-- <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div> -->
+        </paper-toast>
+        <!-- -->
+        <core-ajax
+                id="userDataUpdater"
+                auto="false"
+                url="{{editURL}}"
+                method="POST"
+                params="{{params}}"
+                handleAs="json"
+                on-core-response="{{handleResponse}}"></core-ajax>
+    </template>
+
+    <script>
+        _.mixin(_.str.exports());
+        Polymer('knd-frscandidateinfocardspouse', {
+            publish: {
+                //user: null,
+                spouseDisableSwitch: true,
+                backupUserEdit: null,
+                readonly: true,
+
+                observe: {
+                    user: 'validate'
+                }
+
+            },
+            ready: function () {
+
+            },
+            handleResponse: function (e) {
+                console.log("handleResponse : " + JSON.stringify(e.detail.response));
+                var nbDocumentUpdated = e.detail.response.result.N;
+                var message = "" + nbDocumentUpdated + " document(s) ont été mis à) jour";
+                this.sendingStatus = message;
+                this.$.toast.show();
+
+            },
+            toggleSpouse: function () {
+                this.$.collapseSpouse.toggle();
+                if (this.$.toggleSpouseButton.icon == "expand-more") {
+                    this.$.toggleSpouseButton.icon = "expand-less";
+                    this.$.editSpouseButton.hidden = false;
+                } else {
+                    this.cancelSpouse();
+                    this.$.toggleSpouseButton.icon = "expand-more";
+                    this.$.editSpouseButton.hidden = true;
+                    this.$.cancelSpouseButton.hidden = true;
+                    this.$.cancelSpouseButton.hidden = true;
+                    this.$.submitSpouseButton.hidden = true;
+
+                }
+
+            },
+            toggleDatePicker: function () {
+                if (!this.spouseDisableSwitch) {
+                    this.$.datePicker.toggle();
+                }
+            },
+            editSpouse: function () {
+                this.$.cancelSpouseButton.hidden = false;
+                this.$.submitSpouseButton.hidden = false;
+                this.$.editSpouseButton.hidden = true;
+                this.spouseDisableSwitch = false;
+                this.backupUserEdit = JSON.parse(JSON.stringify(this.user));
+            },
+
+            cancelSpouse: function () {
+                this.$.cancelSpouseButton.hidden = true;
+                this.$.submitSpouseButton.hidden = true;
+                this.$.editSpouseButton.hidden = false;
+                this.spouseDisableSwitch = true;
+                if (this.backupUserEdit != null) {
+                    this.user = JSON.parse(JSON.stringify(this.backupUserEdit));
+                }
+            },
+
+            submitSpouse: function () {
+                this.$.cancelSpouseButton.hidden = true;
+                this.$.submitSpouseButton.hidden = true;
+                this.$.editSpouseButton.hidden = false;
+                this.spouseDisableSwitch = true;
+                //
+                //@Todo Clean this into datepicker
+                var m = moment(this.user.spouse.birthDate.$date);
+                this.user.spouse.birthDate.$date = m.format();
+                //
+                this.params = {};
+                this.params["user"] = JSON.stringify(this.user);
+                this.params["traceAction"] = "true";
+                this.$.userDataUpdater.go();
+
+
+            },
+
+
+            validate: function (oldValue, newValue) {
+                /**
+                 * Should refresh the list
+                 */
+                //console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+            }
+
+        });
+
+    </script>
+
+</polymer-element>

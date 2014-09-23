@@ -2,8 +2,17 @@
       href="../polymer/polymer.html"/>
 <link rel="import"
       href="../core-ajax/core-ajax.html"/>
+        <!-- Composant locaux -->
 <link rel="import"
       href="knd-frscandidateinfocardmain.html"/>
+<link rel="import"
+      href="knd-frscandidateinfocardspouse.html"/>
+<link rel="import"
+      href="knd-frscandidateinfocardchildren.html"/>
+<link rel="import"
+      href="knd-frscandidateinfocardadress.html"/>
+<link rel="import"
+      href="knd-frscandidateinfocardcontact.html"/>
 <!-- @Todo clean import and bower.json file -->
 <script src="../underscore/underscore.js"></script>
 <script src="../underscore.string/lib/underscore.string.js"></script>
@@ -48,29 +57,38 @@ Element providing solution to no problem in particular.
         <section>
             <knd-frscandidateinfocardmain
                     user="{{user}}"
-                    editurl="{{editurl}}"
+                    editURL="{{editurl}}"
                     readonly="false"> </knd-frscandidateinfocardmain>
         </section>
         <section>
-            < knd-frscandidateinfocardspouse
+            <knd-frscandidateinfocardspouse
                     user="{{user}}"
-                    editurl="{{editurl}}"
+                    editURL="{{editurl}}"
                     readonly="false"> </knd-frscandidateinfocardspouse>
         </section>
         <section>
-            < knd-candidatepictures>
-
-            < /knd-candidatepictures>
+            <knd-frscandidateinfocardchildren
+                    user="{{user}}"
+                    editURL="{{editurl}}"
+                    readonly="false"> </knd-frscandidateinfocardchildren>
         </section>
         <section>
-            < knd-candidatelottery>
-
-            < /knd-candidatelottery>
+            <!-- knd-frscandidateinfocardparents
+                    user="{{user}}"
+                    editURL="{{editurl}}"
+                    readonly="false"> </knd-frscandidateinfocardparents -->
         </section>
         <section>
-            < knd-candidatepayment>
-
-            < /knd-candidatepayment>
+            <knd-frscandidateinfocardadress
+                    user="{{user}}"
+                    editURL="{{editurl}}"
+                    readonly="false"> </knd-frscandidateinfocardadress>
+        </section>
+        <section>
+            <knd-frscandidateinfocardcontact
+                    user="{{user}}"
+                    editURL="{{editurl}}"
+                    readonly="false"> </knd-frscandidateinfocardcontact>
         </section>
     </template>
 
