@@ -268,7 +268,7 @@ Element providing solution to no problem in particular.
             this.newChild.birthDate.$date = m.format();
             var child = JSON.parse(JSON.stringify(this.newChild));
 
-            this.user.children.push(this.child);
+            this.user.children.push(child);
             /**@Todo Check this*/
             this.$.addChildDialog.toggle();
         },
@@ -281,11 +281,13 @@ Element providing solution to no problem in particular.
             this.$.cancelChildrenButton.hidden = true;
             this.$.submitChildrenButton.hidden = true;
             this.$.editChildrenButton.hidden = false;
-            //
+            this.childDisableSwitch = true;
 
             //@Todo Clean this into datepicker
-            var m = moment(this.user.children.birthDate.$date);
-            //this.user.children.birthDate.$date = m.format();
+            for (i = 0; i < this.user.children.length; i++) {
+                var m = moment(this.user.children[i].birthDate.$date);
+                this.user.children[i].birthDate.$date = m.format();
+            }
             //
             this.params = {};
             this.params["user"] = JSON.stringify(this.user);
