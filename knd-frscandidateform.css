@@ -11,14 +11,29 @@
     width: 128px;
 }
 
+.namecontact {
+    height: 24px;
+    width: 32px;
+}
+
+.phonecontact {
+    height: 24px;
+    width: 6px;
+}
+
+.speparation{
+    font-size: large;
+    font-weight: bold;
+}
+
 core-icon-button {
     cursor: pointer;
     padding: 0px;
     font-size: 16px;
     fill: #000000;
     color: blue;
-    height: 24px;
-    width: 24px;
+    height: 12px;
+    width: 12px;
 }
 
 core-icon-button:hover {
@@ -119,6 +134,7 @@ span {
 
 paper-icon-button {
     vertical-align: middle;
+    width: 50%;
 }
 
 paper-icon-button.red::shadow core-icon {
