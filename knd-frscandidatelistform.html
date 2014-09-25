@@ -129,7 +129,7 @@ navmode define the way to navigate into the resultset via URL
                     <div horizontal layout>
                         <paper-menu-button icon="search" halign="right" noTransition>
                             <paper-item id="status_none" on-click="{{filterByPictureStatues}}">None</paper-item>
-                            <template repeat="{{status,i in PictureStatues}}">
+                            <template repeat="{{status,i in localPictureStatues}}">
                                 <paper-item id="status_{{i}}" on-click="{{filterByPictureStatues}}">{{status}}</paper-item>
                             </template>
                         </paper-menu-button>
@@ -138,7 +138,7 @@ navmode define the way to navigate into the resultset via URL
                 <th><div vertical layout>
                     <div>DV</div>
                     <div horizontal layout>
-                        <paper-input style="width:64px;" label="Rechercher par année.." value="" type="text"></paper-input>
+                        <paper-input style="width:64px;" id="search_dv" label="Rechercher par année.." value="" type="text"></paper-input>
                         <paper-icon-button icon="search" on-click="{{searchByDV}}"></paper-icon-button>
                     </div>
                 </div></th>
@@ -198,7 +198,7 @@ navmode define the way to navigate into the resultset via URL
                 expandmax: 50,
                 displaystep:10,
                 navmode:"URL_CALL",
-                PictureStatues: [
+                localPictureStatues: [
                     'UNKNOWN',
                     'NEW',
                     'UPLOADED',
@@ -245,7 +245,7 @@ navmode define the way to navigate into the resultset via URL
                 this.updateTable();
             },
             searchByID: function (e) {
-                this.params['search']=JSON.stringify({"_id":this.$.search_id.value});
+                this.params['search']=JSON.stringify({"_id":{ "$oid" : this.$.search_id.value}});
                 this.updateTable();
             },
             sortByLastName: function (e) {
@@ -257,26 +257,27 @@ navmode define the way to navigate into the resultset via URL
                 this.updateTable();
             },
             searchByEmail: function (e) {
-                this.params['search']=JSON.stringify({"main.emails":this.$.search_email.value});
+                this.params['search']=JSON.stringify({"emails":this.$.search_email.value});
                 this.updateTable();
             },
             sortByLastName: function (e) {
                 this.params['sort']=JSON.stringify({"main.lastnameT13n":1});
                 this.updateTable();
             },
-            searchByLastName: function (e) {
-                this.params['search']=JSON.stringify({"main.lastnameT13n":this.search_lastname});
-                this.updateTable();
-            },
             filterByPictureStatues: function (e) {
                 var targetID = e.currentTarget.id
-                if (targetID = "status_none"){
+                if (targetID == "status_none"){
                     this.params['search']=JSON.stringify({});
                 }else{
                     var index = targetID.substr("status_".length);
-                    this.params['search']=JSON.stringify({"picturesStatus" : this.picturesStatus[index]});
+                    this.params['search']=JSON.stringify({"picturesStatus" : this.localPictureStatues[index]});
                 }
-                console.log("validate : " + e.currentTarget.id);
+                this.updateTable();
+                //console.log("validate : " + e.currentTarget.id);
+            },
+            searchByDV: function (e) {
+                this.params['search']=JSON.stringify({"candidacies.year":this.$.search_dv.value});
+                this.updateTable();
             },
             formatDate: function (dateValue) {
                 /**
