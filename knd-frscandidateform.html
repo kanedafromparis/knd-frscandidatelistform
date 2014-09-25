@@ -10,6 +10,8 @@
 <link rel="import"
       href="knd-frscandidateinfocardchildren.html"/>
 <link rel="import"
+      href="knd-frscandidateinfocardparents.html"/>
+<link rel="import"
       href="knd-frscandidateinfocardadress.html"/>
 <link rel="import"
       href="knd-frscandidateinfocardcontact.html"/>
@@ -38,7 +40,7 @@ Element providing solution to no problem in particular.
 @element knd-frscandidateform
 @blurb Element providing solution to no problem in particular.
 @status alpha
-@homepage http://kanedafromparis.github.io/knd-frscandidateform
+@homepage http://kanedafromparis.github.io/knd-frscandidatelistform
 -->
 <polymer-element name="knd-frscandidateform"
                  attributes="url params editurl">
@@ -73,10 +75,10 @@ Element providing solution to no problem in particular.
                     readonly="false"> </knd-frscandidateinfocardchildren>
         </section>
         <section>
-            <!-- knd-frscandidateinfocardparents
+            <knd-frscandidateinfocardparents
                     user="{{user}}"
                     editURL="{{editurl}}"
-                    readonly="false"> </knd-frscandidateinfocardparents -->
+                    readonly="false"> </knd-frscandidateinfocardparents>
         </section>
         <section>
             <knd-frscandidateinfocardadress
