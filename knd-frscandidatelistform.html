@@ -137,10 +137,10 @@ navmode define the way to navigate into the resultset via URL
                 </div></th>
                 <th><div vertical layout>
                     <div>DV</div>
-                    <div horizontal layout>
+                    <!-- <div horizontal layout>
                         <paper-input style="width:64px;" id="search_dv" label="Rechercher par année.." value="" type="text"></paper-input>
                         <paper-icon-button icon="search" on-click="{{searchByDV}}"></paper-icon-button>
-                    </div>
+                    </div> -->
                 </div></th>
             </tr>
             </thead>
@@ -245,7 +245,11 @@ navmode define the way to navigate into the resultset via URL
                 this.updateTable();
             },
             searchByID: function (e) {
-                this.params['search']=JSON.stringify({"_id":{ "$oid" : this.$.search_id.value}});
+                if (this.$.search_id.value == ""){
+                    this.params['search']=null;
+                }else{
+                    this.params['search']=JSON.stringify({"_id":{ "$oid" : this.$.search_id.value}});
+                }
                 this.updateTable();
             },
             sortByLastName: function (e) {
@@ -253,15 +257,19 @@ navmode define the way to navigate into the resultset via URL
                 this.updateTable();
             },
             searchByLastName: function (e) {
-                this.params['search']=JSON.stringify({"main.lastnameT13n":this.$.search_lastname.value});
+                if (this.$.search_lastname.value == ""){
+                    this.params['search']=null;
+                }else {
+                    this.params['search'] = JSON.stringify({"main.lastnameT13n": this.$.search_lastname.value});
+                }
                 this.updateTable();
             },
             searchByEmail: function (e) {
-                this.params['search']=JSON.stringify({"emails":this.$.search_email.value});
-                this.updateTable();
-            },
-            sortByLastName: function (e) {
-                this.params['sort']=JSON.stringify({"main.lastnameT13n":1});
+                if (this.$.search_email.value == ""){
+                    this.params['search']=null;
+                }else {
+                    this.params['search'] = JSON.stringify({"emails": this.$.search_email.value});
+                }
                 this.updateTable();
             },
             filterByPictureStatues: function (e) {
