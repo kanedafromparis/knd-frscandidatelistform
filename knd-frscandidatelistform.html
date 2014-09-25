@@ -85,7 +85,7 @@ navmode define the way to navigate into the resultset via URL
             <tbody>
             <template id="userTable" repeat="{{user in users}}">
                 <tr>
-                    <td><a href="{{editurl+'/'+user._id.$oid}}">{{user._id.$oid}}</a></td>
+                    <td><a href="{{editurl+user._id.$oid}}">{{user._id.$oid}}</a></td>
                     <td>{{user.main.lastname}}</td>
                     <td>{{user.main.firstname}}</td>
                     <td>
