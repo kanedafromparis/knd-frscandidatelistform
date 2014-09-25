@@ -42,6 +42,16 @@ paper-dialog {
     margin-bottom: 0;
 }
 
+.thumbnail{
+    display: block;
+    padding: 4px;
+    margin-bottom: 20px;
+    line-height: 1.428571429;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all .2s ease-in-out;
+}
 paper-dialog paper-button {
     font-weight: bold;
 }
