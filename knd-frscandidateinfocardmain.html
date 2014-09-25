@@ -240,7 +240,7 @@ Element providing solution to no problem in particular.
                 //
                 //@Todo Clean this into datepicker
                 var m = moment(this.user.main.birthDate.$date);
-                this.user.main.birthDate.$date = m.format();
+                this.user.main.birthDate.$date = m.format("YYYY-MM-DDTHH:mm:00.000")+"Z";
                 //
                 this.params = {};
                 this.params["user"] = JSON.stringify(this.user);

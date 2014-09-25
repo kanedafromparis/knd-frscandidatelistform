@@ -267,7 +267,7 @@ Element providing solution to no problem in particular.
         },
         submitAddChild: function () {
             var m =  moment(this.newChild.birthDate.$date);
-            this.newChild.birthDate.$date = m.format("YYYY-MM-DDTHH:mm:00.000z");
+            this.newChild.birthDate.$date = m.format("YYYY-MM-DDTHH:mm:00.000")+"Z";
             var child = JSON.parse(JSON.stringify(this.newChild));
 
             this.user.children.push(child);
@@ -287,11 +287,11 @@ Element providing solution to no problem in particular.
             this.$.submitChildrenButton.hidden = true;
             this.$.editChildrenButton.hidden = false;
             this.childDisableSwitch = true;
-            this.localchildrenCount = this.localchildrenCount;
+            this.user.childrenCount = this.localchildrenCount;
             //@Todo Clean this into datepicker
             for (i = 0; i < this.user.children.length; i++) {
                 var m = moment(this.user.children[i].birthDate.$date);
-                this.user.children[i].birthDate.$date = m.format("YYYY-MM-DDTHH:mm:00.000z");
+                this.user.children[i].birthDate.$date = m.format("YYYY-MM-DDTHH:mm:00.000")+"Z";
             }
             //
             this.params = {};
