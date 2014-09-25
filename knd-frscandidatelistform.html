@@ -87,9 +87,8 @@ navmode define the way to navigate into the resultset via URL
             <tr>
                 <th>
                     <div vertical layout>
-                        <div>#</div>
+                        <div><paper-icon-button icon="filter" id="ico_sort_id" on-click="{{sortByID}}"></paper-icon-button>#</div>
                         <div horizontal layout>
-                            <paper-icon-button icon="filter" id="ico_sort_id" on-click="{{sortByID}}"></paper-icon-button>
                             <paper-input style="width:64px;" id="search_id" label="Rechercher..." value="" type="text"></paper-input>
                             <paper-icon-button icon="search" on-click="{{searchByID}}"></paper-icon-button>
                         </div>
@@ -97,9 +96,8 @@ navmode define the way to navigate into the resultset via URL
                 </th>
                 <th>
                     <div vertical layout>
-                        <div>Nom</div>
+                        <div><paper-icon-button icon="filter" id="ico_sort_LastName" on-click="{{sortByLastName}}"></paper-icon-button>Nom</div>
                         <div horizontal layout>
-                            <paper-icon-button icon="filter" id="ico_sort_LastName" on-click="{{filterByLastName}}"></paper-icon-button>
                             <paper-input style="width:64px;" id="search_lastname" label="Rechercher..." value="" type="text"></paper-input>
                             <paper-icon-button icon="search" on-click="{{searchByLastName}}"></paper-icon-button>
                         </div>
@@ -117,7 +115,7 @@ navmode define the way to navigate into the resultset via URL
                 <th><div vertical layout>
                     <div>Email</div>
                     <div horizontal layout>
-                        <paper-input style="width:64px;" id="search_email" label="Rechercher..." value="" type="text"></paper-input>
+                        <paper-input style="width:256px;" id="search_email" label="Rechercher..." value="" type="text"></paper-input>
                         <paper-icon-button icon="search" on-click="{{searchByEmail}}"></paper-icon-button>
                     </div>
                 </div></th>
