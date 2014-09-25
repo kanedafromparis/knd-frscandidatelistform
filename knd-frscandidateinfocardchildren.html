@@ -77,8 +77,8 @@ Element providing solution to no problem in particular.
 
             </div></span>
         <core-collapse id="collapseChildren" class="cardcontent box">
-            <div class="speparation"> Enfant(s)
-                <paper-icon-button id="submitAddChildButton" hidden?="{{childDisableSwitch}}" disabled="{{childDisableSwitch}}" icon="add" on-click="{{toggleAddChild}}"></paper-icon-button>:
+            <div class="speparation"> Enfant(s)  {{localchildrenCount}}
+                <paper-icon-button id="submitAddChildButton" hidden?="{{childDisableSwitch}}" disabled="{{childDisableSwitch}}" icon="add" on-click="{{toggleAddChild}}"></paper-icon-button>
             </div>
             <template repeat="{{ child,i in user.children }}">
                 <div>
@@ -182,6 +182,7 @@ Element providing solution to no problem in particular.
             newChild:{},
             tempData:null,
             tempChildIndex:null,
+            localchildrenCount:0,
 
             observe: {
                 user: 'validate',
@@ -205,6 +206,7 @@ Element providing solution to no problem in particular.
             if (this.$.toggleChildrenButton.icon == "expand-more") {
                 this.$.toggleChildrenButton.icon = "expand-less";
                 this.$.editChildrenButton.hidden = false;
+                this.localchildrenCount = this.user.childrenCount;
             } else {
                 this.cancelChildren();
                 this.$.toggleChildrenButton.icon = "expand-more";
@@ -265,16 +267,19 @@ Element providing solution to no problem in particular.
         },
         submitAddChild: function () {
             var m =  moment(this.newChild.birthDate.$date);
-            this.newChild.birthDate.$date = m.format();
+            this.newChild.birthDate.$date = m.format("YYYY-MM-DDTHH:mm:00.000z");
             var child = JSON.parse(JSON.stringify(this.newChild));
 
             this.user.children.push(child);
+            this.user.childrenCount = this.localchildrenCount+1;
             /**@Todo Check this*/
             this.$.addChildDialog.toggle();
         },
         submitRemoveChild: function (e) {
             var index = e.currentTarget.id.substr("child_".length);
             this.user.children.splice(index, 1);
+            this.localchildrenCount = this.localchildrenCount-1;
+
         },
 
         submitChildren: function () {
@@ -282,11 +287,11 @@ Element providing solution to no problem in particular.
             this.$.submitChildrenButton.hidden = true;
             this.$.editChildrenButton.hidden = false;
             this.childDisableSwitch = true;
-
+            this.localchildrenCount = this.localchildrenCount;
             //@Todo Clean this into datepicker
             for (i = 0; i < this.user.children.length; i++) {
                 var m = moment(this.user.children[i].birthDate.$date);
-                this.user.children[i].birthDate.$date = m.format();
+                this.user.children[i].birthDate.$date = m.format("YYYY-MM-DDTHH:mm:00.000z");
             }
             //
             this.params = {};
