@@ -1,0 +1,250 @@
+<link rel="import"
+      href="../polymer/polymer.html" xmlns="http://www.w3.org/1999/html"/>
+<link rel="import"
+      href="../core-ajax/core-ajax.html"/>
+
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icons/av-icons.html">
+<link rel="import" href="../core-icons/maps-icons.html">
+<link rel="import" href="../core-icons/image-icons.html">
+<link rel="import" href="../core-icons/social-icons.html">
+<link rel="import" href="../core-icons/editor-icons.html">
+<link rel="import" href="../core-selector/core-selector.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-dialog/paper-dialog-transition.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+
+<link rel="import" href="../polymer-date-picker/polymer-date-picker.html">
+
+<link rel="import"
+      href="../core-collapse/core-collapse.html"/>
+
+        <!-- ajax form -->
+<!-- @Todo clean import and bower.json file -->
+<script src="../underscore/underscore.js"></script>
+<script src="../underscore.string/lib/underscore.string.js"></script>
+<!-- Moment -->
+<script src="../moment/moment.js"></script>
+<script src="../moment-timezone/moment-timezone.js"></script>
+<script src="../moment-timezone/moment-timezone-utils.js"></script>
+<!-- bootstrap actions -->
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap-theme.css"/>
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap.css"/>
+<script src="../jquery/dist/jquery.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.js"></script>
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <knd-frscandidateinfocardparents
+           user=""
+           editURL=""
+    ></knd-frscandidateinfocardparents>
+
+@element knd-frscandidateinfocardparents
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://kanedafromparis.github.io/knd-frscandidateforme
+@Todo gestion du cross site (using headers ?)
+-->
+<polymer-element name="knd-frscandidateinfocardparents"
+                 attributes="user editURL readonly">
+    <link rel="stylesheet"
+          href="knd-frscandidatelistform.css"/>
+    <template>
+        <div>
+
+
+        </div>
+
+        <!--Parents-->
+        <section class="infocard">
+            <span><div class="cardtitle">Parents
+                <paper-icon-button id="toggleParentsButton" icon="expand-more" on-click="{{toggleParents}}">
+                </paper-icon-button>
+                <paper-icon-button id="editParentsButton" icon="editor:mode-edit" on-click="{{editParents}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="cancelParentsButton" icon="close" on-click="{{cancelParents}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="submitParentsButton" icon="check" on-click="{{submitParents}}" hidden="true">
+                </paper-icon-button>
+
+            </div>
+            </span>
+            <core-collapse id="collapseParents" class="cardcontent box">
+
+
+                <div class="speparation"> Parents du candidat: </div>
+                <div horizontal layout>
+                        <paper-input floatingLabel label="MOTHER ou FATHER" value="{{mainparents0_type}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Pays de naissance" value="{{mainparents0_birthCountry}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Pays d'habitation" value="{{mainparents0_livingInCountry}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input></div>
+                </div>
+                <div horizontal layout>
+                        <paper-input floatingLabel label="MOTHER ou FATHER" value="{{mainparents1_type}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Pays de naissance" value="{{mainparents1_birthCountry}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Pays d'habitation" value="{{mainparents1_livingInCountry}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input></div>
+                </div>
+                <div class="speparation"> Parents de l'époux: </div>
+                <div horizontal layout>
+                        <paper-input floatingLabel label="MOTHER ou FATHER" value="{{spouseparents0_type}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Pays de naissance" value="{{spouseparents0_birthCountry}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Pays d'habitation" value="{{spouseparents0_livingInCountry}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input></div>
+                </div>
+                <div horizontal layout>
+                        <paper-input floatingLabel label="MOTHER ou FATHER" value="{{spouseparents1_type}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Pays de naissance" value="{{spouseparents1_birthCountry}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input>
+                        <paper-input floatingLabel label="Pays d'habitation" value="{{spouseparents1_livingInCountry}}" type="text" disabled="{{parentsDisableSwitch}}"></paper-input></div>
+                </div>
+            </core-collapse>
+        </section>
+        <paper-toast id="toast" role="alert" text="{{sendingStatus}}">
+           <!-- <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div> -->
+        </paper-toast>
+        <!-- -->
+        <core-ajax
+                id="parentsDataUpdater"
+                auto="false"
+                url="{{editURL}}"
+                method="POST"
+                params="{{params}}"
+                handleAs="json"
+                on-core-response="{{handleResponse}}"></core-ajax>
+    </template>
+
+    <script>
+        _.mixin(_.str.exports());
+        Polymer('knd-frscandidateinfocardparents', {
+            publish: {
+                //user: null,
+                parentsDisableSwitch : true,
+                backupUserEdit : null,
+                readonly : true,
+
+                observe: {
+                    user: 'validate'
+                }
+
+            },
+            updateData: function () {
+                if(this.user.main.parents.length > 0){
+
+                    this.mainparents0_type= this.user.main.parent[0].type;
+                    this.mainparents0_birthCountry = this.user.main.parent[0].birthCountry;
+                    this.mainparents0_livingCountry = this.user.main.parent[0].livingCountry;
+                }
+                if(this.user.main.parents.length > 1){
+
+                    this.mainparents1_type= this.user.main.parent[1].type;
+                    this.mainparents1_birthCountry = this.user.main.parent[1].birthCountry;
+                    this.mainparents1_livingCountry = this.user.main.parent[1].livingCountry;
+                }
+                if(this.user.spouse.parents.length > 0){
+
+                    this.spouseparents0_type= this.user.spouse.parent[0].type;
+                    this.spouseparents0_birthCountry = this.user.spouse.parent[0].birthCountry;
+                    this.spouseparents0_livingCountry = this.user.spouse.parent[0].livingCountry;
+                }
+                if(this.user.spouse.parents.length > 0){
+
+                    this.spouseparents1_type= this.user.spouse.parent[1].type;
+                    this.spouseparents1_birthCountry = this.user.spouse.parent[1].birthCountry;
+                    this.spouseparents1_livingCountry = this.user.spouse.parent[1].livingCountry;
+                }
+            },
+            handleResponse: function (e) {
+                console.log("handleResponse : " + JSON.stringify(e.detail.response));
+                var nbDocumentUpdated = e.detail.response.result.N;
+                var message = ""+nbDocumentUpdated+" document(s) ont été mis à jour";
+                this.sendingStatus = message;
+                this.$.toast.show();
+
+            },
+
+            toggleParents: function () {
+                this.$.collapseParents.toggle();
+                if (this.$.toggleParentsButton.icon=="expand-more"){
+                    this.updateData;
+                    this.$.toggleParentsButton.icon="expand-less";
+                    this.$.editParentsButton.hidden=false;
+                }else{
+                    this.cancelParents();
+                    this.$.toggleParentsButton.icon="expand-more";
+                    this.$.editParentsButton.hidden=true;
+                    this.$.cancelParentsButton.hidden=true;
+                    this.$.cancelParentsButton.hidden=true;
+                    this.$.submitParentsButton.hidden=true;
+                }
+            },
+            editParents: function () {
+                this.$.cancelParentsButton.hidden=false;
+                this.$.submitParentsButton.hidden=false;
+                this.$.editParentsButton.hidden=true;
+                this.parentsDisableSwitch = false;
+                this.backupUserEdit = JSON.parse(JSON.stringify(this.user));
+            },
+            cancelParents: function () {
+                this.$.cancelParentsButton.hidden=true;
+                this.$.submitParentsButton.hidden=true;
+                this.$.editParentsButton.hidden=false;
+                this.parentsDisableSwitch = true;
+                if(this.backupUserEdit != null){
+                    this.user = JSON.parse(JSON.stringify(this.backupUserEdit));
+                }
+            },
+
+            submitParents: function () {
+                this.$.cancelParentsButton.hidden=true;
+                this.$.submitParentsButton.hidden=true;
+                this.$.editParentsButton.hidden=false;
+                this.parentsDisableSwitch = true;
+                /**
+                 */
+                var parent = {};
+                parent["type"]=this.mainparents1_type;
+                parent["birthCountry"]=this.mainparents1_birthCountry;
+                parent["livingCountry"]=this.mainparents1_livingInCountry;
+                this.user.main.parents.push(JSON.parse(JSON.stringify(parent)));
+                parent["type"]=this.mainparents0_type;
+                parent["birthCountry"]=this.mainparents0_birthCountry;
+                parent["livingInCountry"]=this.mainparents0_livingInCountry;
+                this.user.main.parents.push(JSON.parse(JSON.stringify(parent)));
+                parent["type"]=this.spouseparents1_type;
+                parent["birthCountry"]=this.spouseparents1_birthCountry;
+                parent["livingInCountry"]=this.spouseparents1_livingInCountry;
+                this.user.spouse.parents.push(JSON.parse(JSON.stringify(parent)));
+                parent["type"]=this.spouseparents0_type;
+                parent["birthCountry"]=this.spouseparents0_birthCountry;
+                parent["livingInCountry"]=this.spouseparents0_livingInCountry;
+                this.user.spouse.parents.push(JSON.parse(JSON.stringify(parent)));
+
+
+                this.params = {};
+                this.params["user"]= JSON.stringify(this.user);
+                this.params["traceAction"]= "true";
+                this.$.parentsDataUpdater.go();
+
+
+            },
+
+
+            validate: function (oldValue, newValue) {
+                /**
+                 * Should refresh the list
+                 */
+                //console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+            }
+
+        });
+
+    </script>
+
+</polymer-element>
