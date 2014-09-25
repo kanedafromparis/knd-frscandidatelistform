@@ -10,6 +10,9 @@
 <link rel="import" href="../core-icons/social-icons.html">
 <link rel="import" href="../core-selector/core-selector.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-menu-button/paper-menu-button.html">
 
 <!-- @Todo clean import and bower.json file -->
 <script src="../underscore/underscore.js"></script>
@@ -52,13 +55,22 @@ navmode define the way to navigate into the resultset via URL
 
     <template>
         <section>
-            <paper-icon-button icon="av:skip-previous" on-click="{{skipPrevious}}"></paper-icon-button>
-            <paper-icon-button icon="av:fast-rewind" on-click="{{fastRewind}}"></paper-icon-button>
-            <paper-icon-button icon="expand-less" on-click="{{expandLess}}"></paper-icon-button>
-            <paper-icon-button icon="expand-more" on-click="{{expandMore}}"></paper-icon-button>
-            <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
-            <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
+            <div horizontal layout>
+                <div>
+
+                </div>
+                <div horizontal layout>
+                    <paper-icon-button icon="av:skip-previous" on-click="{{skipPrevious}}"></paper-icon-button>
+                    <paper-icon-button icon="av:fast-rewind" on-click="{{fastRewind}}"></paper-icon-button>
+                    <paper-icon-button icon="expand-less" on-click="{{expandLess}}"></paper-icon-button>
+                    <paper-icon-button icon="expand-more" on-click="{{expandMore}}"></paper-icon-button>
+                    <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
+                    <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
+                </div>
+            </div>
+
         </section>
+
 
         <link rel="stylesheet"
               href="knd-frscandidatelistform.css"/>
@@ -66,20 +78,70 @@ navmode define the way to navigate into the resultset via URL
                 id="userDataSource"
                 auto="false"
                 url="{{computedURL}}"
+                method="POST"
                 params="{{params}}"
                 handleAs="json"
                 on-core-response="{{handleResponse}}"></core-ajax>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>#</th>
-                <th>Last Name</th>
-                <th>First Name</th>
-                <th>Email</th>
+                <th>
+                    <div vertical layout>
+                        <div>#</div>
+                        <div horizontal layout>
+                            <paper-icon-button icon="filter" id="ico_sort_id" on-click="{{sortByID}}"></paper-icon-button>
+                            <paper-input style="width:64px;" id="search_id" label="Rechercher..." value="" type="text"></paper-input>
+                            <paper-icon-button icon="search" on-click="{{searchByID}}"></paper-icon-button>
+                        </div>
+                    </div>
+                </th>
+                <th>
+                    <div vertical layout>
+                        <div>Nom</div>
+                        <div horizontal layout>
+                            <paper-icon-button icon="filter" id="ico_sort_LastName" on-click="{{filterByLastName}}"></paper-icon-button>
+                            <paper-input style="width:64px;" id="search_lastname" label="Rechercher..." value="" type="text"></paper-input>
+                            <paper-icon-button icon="search" on-click="{{searchByLastName}}"></paper-icon-button>
+                        </div>
+                    </div></th>
+                <th><div vertical layout>
+                    <div>Prénom</div>
+                    <!--
+                    <div horizontal layout>
+                        <paper-icon-button icon="filter" on-click="{{filterByID}}"></paper-icon-button>
+                        <paper-input style="width:64px;" label="Rechercher..." value="" type="text"></paper-input>
+                        <paper-icon-button icon="search" on-click="{{skipPrevious}}"></paper-icon-button>
+                    </div>
+                    -->
+                </div></th>
+                <th><div vertical layout>
+                    <div>Email</div>
+                    <div horizontal layout>
+                        <paper-input style="width:64px;" id="search_email" label="Rechercher..." value="" type="text"></paper-input>
+                        <paper-icon-button icon="search" on-click="{{searchByEmail}}"></paper-icon-button>
+                    </div>
+                </div></th>
                 <th>Birth Date</th>
                 <th>Birth Country</th>
                 <th>Education</th>
-                <th>Picture</th>
+                <th><div vertical layout>
+                    <div>Status Photos</div>
+                    <div horizontal layout>
+                        <paper-menu-button icon="search" halign="right" noTransition>
+                            <paper-item id="status_none" on-click="{{filterByPictureStatues}}">None</paper-item>
+                            <template repeat="{{status,i in PictureStatues}}">
+                                <paper-item id="status_{{i}}" on-click="{{filterByPictureStatues}}">{{status}}</paper-item>
+                            </template>
+                        </paper-menu-button>
+                    </div>
+                </div></th>
+                <th><div vertical layout>
+                    <div>DV</div>
+                    <div horizontal layout>
+                        <paper-input style="width:64px;" label="Rechercher par année.." value="" type="text"></paper-input>
+                        <paper-icon-button icon="search" on-click="{{searchByDV}}"></paper-icon-button>
+                    </div>
+                </div></th>
             </tr>
             </thead>
             <tbody>
@@ -92,12 +154,18 @@ navmode define the way to navigate into the resultset via URL
                         <template id="emails" repeat="{{email in user.emails}}">
                             <div>{{email}}</div>
                         </template>
-
                     </td>
                     <td>{{formatDate(user.main.birthDate.$date)}}</td>
                     <td>{{user.main.birthCountry}}</td>
                     <td>{{user.main.education}}</td>
                     <td>{{user.picturesStatus}}</td>
+                    <td>
+                        <!-- todo <paper-icon-button id="toggleChildrenButton" icon="expand-more" on-click="{{toggleChildren}}"></paper-icon-button>
+                            <core-collapse id="collapseChildren" class="cardcontent box"> -->
+                        <template   id="candidacies" repeat="{{candicacy in user.candidacies}}">
+                        <div style="font-size: 8px">{{candicacy.year}} - {{candicacy.label}} - {{candicacy.status}}</div>
+                    </template>
+                    </td>
                 </tr>
             </template>
             </tbody>
@@ -130,6 +198,17 @@ navmode define the way to navigate into the resultset via URL
                 expandmax: 50,
                 displaystep:10,
                 navmode:"URL_CALL",
+                PictureStatues: [
+                    'UNKNOWN',
+                    'NEW',
+                    'UPLOADED',
+                    'VALIDATED',
+                    'MISSING_MAIN',
+                    'MISSING_SPOUSE',
+                    'MISSING_CHILD',
+                    'EXPIRED',
+                    'FLAGGED'
+                ],
                 observe: {
                     url: 'validate'
                 }
@@ -140,10 +219,12 @@ navmode define the way to navigate into the resultset via URL
             },
             updateTable: function () {
                 this.buildRequest();
+                //this.spinner.toggle();
                 this.$.userDataSource.go();
             },
             handleResponse: function (e) {
-                console.log("handleResponse : " + JSON.stringify(e.detail.response));
+                //console.log("handleResponse : " + JSON.stringify(e.detail.response));
+                //this.spinner.toggle();
                 this.users = e.detail.response.users;
                 if (this.expandmax > e.detail.response.expandmax){
                     this.expandmax = e.detail.response.expandmax;
@@ -159,11 +240,49 @@ navmode define the way to navigate into the resultset via URL
                  */
                 //console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
             },
+            sortByID: function (e) {
+                this.params['sort']=JSON.stringify({"_id":1});
+                this.updateTable();
+            },
+            searchByID: function (e) {
+                this.params['search']=JSON.stringify({"_id":this.$.search_id.value});
+                this.updateTable();
+            },
+            sortByLastName: function (e) {
+                this.params['sort']=JSON.stringify({"main.lastnameT13n":1});
+                this.updateTable();
+            },
+            searchByLastName: function (e) {
+                this.params['search']=JSON.stringify({"main.lastnameT13n":this.$.search_lastname.value});
+                this.updateTable();
+            },
+            searchByEmail: function (e) {
+                this.params['search']=JSON.stringify({"main.emails":this.$.search_email.value});
+                this.updateTable();
+            },
+            sortByLastName: function (e) {
+                this.params['sort']=JSON.stringify({"main.lastnameT13n":1});
+                this.updateTable();
+            },
+            searchByLastName: function (e) {
+                this.params['search']=JSON.stringify({"main.lastnameT13n":this.search_lastname});
+                this.updateTable();
+            },
+            filterByPictureStatues: function (e) {
+                var targetID = e.currentTarget.id
+                if (targetID = "status_none"){
+                    this.params['search']=JSON.stringify({});
+                }else{
+                    var index = targetID.substr("status_".length);
+                    this.params['search']=JSON.stringify({"picturesStatus" : this.picturesStatus[index]});
+                }
+                console.log("validate : " + e.currentTarget.id);
+            },
             formatDate: function (dateValue) {
                 /**
                  * Should refresh the list
                  */
-                console.log("formatDate : " + JSON.stringify(dateValue));
+                //console.log("formatDate : " + JSON.stringify(dateValue));
                 return _.truncate(dateValue, 10);
             },
             skipPrevious: function () {

@@ -5,7 +5,9 @@
     "C. Sabourdin <kanedafromparis@gmail.com>"
   ],
   "description": "Element providing a login form, with register or google, twiter and facebook.",
-  "keywords": ["loginform, polymer, web-components"],
+  "keywords": [
+    "loginform, polymer, web-components"
+  ],
   "main": "knd-frscandidatelistform.html",
   "license": "LGPLv3",
   "homepage": "https://github.com/kanedafromparis/knd-frscandidatelistform/",
@@ -28,7 +30,8 @@
     "paper-radio-group": "Polymer/paper-radio-group#~0.4.1",
     "paper-toast": "Polymer/paper-toast#~0.4.1",
     "moment": "~2.8.3",
-    "paper-dialog": "Polymer/paper-dialog#~0.4.1"
+    "paper-dialog": "Polymer/paper-dialog#~0.4.1",
+    "paper-menu-button": "Polymer/paper-menu-button#~0.4.1",
+    "paper-item": "Polymer/paper-item#~0.4.1"
   }
-
 }
