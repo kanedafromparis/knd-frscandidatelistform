@@ -63,6 +63,7 @@ navmode define the way to navigate into the resultset via URL
                     <paper-icon-button icon="av:skip-previous" on-click="{{skipPrevious}}"></paper-icon-button>
                     <paper-icon-button icon="av:fast-rewind" on-click="{{fastRewind}}"></paper-icon-button>
                     <paper-icon-button icon="expand-less" on-click="{{expandLess}}"></paper-icon-button>
+                    <div>{{ (skip +1)}} / {{ (skip + limit + 1)}}</div>
                     <paper-icon-button icon="expand-more" on-click="{{expandMore}}"></paper-icon-button>
                     <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
                     <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
@@ -112,7 +113,7 @@ navmode define the way to navigate into the resultset via URL
                     </div>
                     -->
                 </div></th>
-                <th><div vertical layout>
+                <th  width="250px"><div vertical layout>
                     <div>Email</div>
                     <div horizontal layout>
                         <paper-input style="width:256px;" id="search_email" label="Rechercher..." value="" type="text"></paper-input>
@@ -120,8 +121,8 @@ navmode define the way to navigate into the resultset via URL
                     </div>
                 </div></th>
                 <th>Birth Date</th>
-                <th>Birth Country</th>
-                <th>Education</th>
+                <th width="60px">Birth Country</th>
+                <th width="60px">Statut marital (nb enfant)</th>
                 <th><div vertical layout>
                     <div>Status Photos</div>
                     <div horizontal layout>
@@ -133,13 +134,7 @@ navmode define the way to navigate into the resultset via URL
                         </paper-menu-button>
                     </div>
                 </div></th>
-                <th><div vertical layout>
-                    <div>DV</div>
-                    <!-- <div horizontal layout>
-                        <paper-input style="width:64px;" id="search_dv" label="Rechercher par année.." value="" type="text"></paper-input>
-                        <paper-icon-button icon="search" on-click="{{searchByDV}}"></paper-icon-button>
-                    </div> -->
-                </div></th>
+                <th>Date MAJ user</th>
             </tr>
             </thead>
             <tbody>
@@ -153,17 +148,11 @@ navmode define the way to navigate into the resultset via URL
                             <div>{{email}}</div>
                         </template>
                     </td>
-                    <td>{{formatDate(user.main.birthDate.$date)}}</td>
+                    <td><span style="display: block;">{{formatDate(user.main.birthDate.$date)}}</span></td>
                     <td>{{user.main.birthCountry}}</td>
-                    <td>{{user.main.education}}</td>
+                    <td><span title="{{user.maritalStatus}} ({{user.childrenCount}} child)">{{ formatStatutMarital(user.maritalStatus) }}({{user.childrenCount}} c)</span></td>
                     <td>{{user.picturesStatus}}</td>
-                    <td>
-                        <!-- todo <paper-icon-button id="toggleChildrenButton" icon="expand-more" on-click="{{toggleChildren}}"></paper-icon-button>
-                            <core-collapse id="collapseChildren" class="cardcontent box"> -->
-                        <template   id="candidacies" repeat="{{candicacy in user.candidacies}}">
-                        <div style="font-size: 8px">{{candicacy.year}} - {{candicacy.label}} - {{candicacy.status}}</div>
-                    </template>
-                    </td>
+                    <td>{{formatDate(user.userUpdated.$date)}}</td>
                 </tr>
             </template>
             </tbody>
@@ -285,12 +274,18 @@ navmode define the way to navigate into the resultset via URL
                 this.params['search']=JSON.stringify({"candidacies.year":this.$.search_dv.value});
                 this.updateTable();
             },
+            formatStatutMarital: function (statut){
+                return statut.substr(0, 3);
+            },
             formatDate: function (dateValue) {
                 /**
                  * Should refresh the list
                  */
-                //console.log("formatDate : " + JSON.stringify(dateValue));
-                return _.truncate(dateValue, 10);
+                //console.log("formatDate json: " + JSON.stringify(dateValue)+ " strg:"+ dateValue.toString());
+                if(dateValue == undefined){
+                    return "inconnue";
+                }
+                return dateValue.toString().substr(0, 10);
             },
             skipPrevious: function () {
                 this.skip=0;
