@@ -63,16 +63,23 @@ navmode define the way to navigate into the resultset via URL
                     <paper-icon-button icon="av:skip-previous" on-click="{{skipPrevious}}"></paper-icon-button>
                     <paper-icon-button icon="av:fast-rewind" on-click="{{fastRewind}}"></paper-icon-button>
                     <paper-icon-button icon="expand-less" on-click="{{expandLess}}"></paper-icon-button>
-                    <div>de {{ (skip +1)}} à {{ (skip + limit + 1)}}</div>
+                    <div>de {{ (skip +1)}} à {{ (skip + limit + 1)}} sur {{end}}</div>
                     <paper-icon-button icon="expand-more" on-click="{{expandMore}}"></paper-icon-button>
                     <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
                     <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
                 </div>
                 <paper-menu-button icon="search" halign="right" noTransition>
                     <paper-item id="item_years_none" on-click="{{filterByCandidacyYear}}">None</paper-item>
+                    <paper-item id="item_years_2012" on-click="{{filterByCandidacyYear}}">2012</paper-item>
+                    <paper-item id="item_years_2013" on-click="{{filterByCandidacyYear}}">2013</paper-item>
+                    <paper-item id="item_years_2014" on-click="{{filterByCandidacyYear}}">2014</paper-item>
+                    <paper-item id="item_years_2015" on-click="{{filterByCandidacyYear}}">2015</paper-item>
+                    <paper-item id="item_years_2016" on-click="{{filterByCandidacyYear}}">2016</paper-item>
+                    <!--
                     <template repeat="{{year,i in localYearFilter}">
                         <paper-item id="item_years_{{i}}" on-click="{{filterByCandidacyYear}}">{{year}}</paper-item>
                     </template>
+                    -->
                 </paper-menu-button>
             </div>
 
@@ -212,7 +219,9 @@ navmode define the way to navigate into the resultset via URL
                     "2016"
                 ],
                 observe: {
-                    url: 'validate'
+                    url: 'validate',
+                    localYearFilter: 'validate'
+
                 }
 
             },
@@ -240,7 +249,7 @@ navmode define the way to navigate into the resultset via URL
                 /**
                  * Should refresh the list
                  */
-                //console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+                console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
             },
             sortByID: function (e) {
                 this.params['sort']=JSON.stringify({"_id":1});
@@ -285,14 +294,15 @@ navmode define the way to navigate into the resultset via URL
                 this.updateTable();
                 //console.log("validate : " + e.currentTarget.id);
             },
-            filterByCandicacyYear: function (e) {
+            filterByCandidacyYear: function (e) {
                 var targetID = e.currentTarget.id;
 
                 if (targetID == "item_years_none"){
                     this.params['search']=JSON.stringify({});
                 }else{
                     var index = targetID.substr("item_years_".length);
-                    this.params['search']=JSON.stringify({"candidacies":{"$elemMatch":{"year" : this.localYearFilter[index]}}});
+                    //this.params['search']=JSON.stringify({"candidacies":{"$elemMatch":{"year" : this.localYearFilter[index]}}});
+                    this.params['search']=JSON.stringify({"candidacies":{"$elemMatch":{"year" : index}}});
                 }
                 this.updateTable();
                 //console.log("validate : " + e.currentTarget.id);
