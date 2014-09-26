@@ -63,15 +63,20 @@ navmode define the way to navigate into the resultset via URL
                     <paper-icon-button icon="av:skip-previous" on-click="{{skipPrevious}}"></paper-icon-button>
                     <paper-icon-button icon="av:fast-rewind" on-click="{{fastRewind}}"></paper-icon-button>
                     <paper-icon-button icon="expand-less" on-click="{{expandLess}}"></paper-icon-button>
-                    <div>{{ (skip +1)}} / {{ (skip + limit + 1)}}</div>
+                    <div>de {{ (skip +1)}} à {{ (skip + limit + 1)}}</div>
                     <paper-icon-button icon="expand-more" on-click="{{expandMore}}"></paper-icon-button>
                     <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
                     <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
                 </div>
+                <paper-menu-button icon="search" halign="right" noTransition>
+                    <paper-item id="item_years_none" on-click="{{filterByCandidacyYear}}">None</paper-item>
+                    <template repeat="{{year,i in localYearFilter}">
+                        <paper-item id="item_years_{{i}}" on-click="{{filterByCandidacyYear}}">{{year}}</paper-item>
+                    </template>
+                </paper-menu-button>
             </div>
 
         </section>
-
 
         <link rel="stylesheet"
               href="knd-frscandidatelistform.css"/>
