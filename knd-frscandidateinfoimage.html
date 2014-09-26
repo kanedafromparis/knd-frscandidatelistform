@@ -62,33 +62,29 @@ https://www.franceservice.com/api/admin/pictures/
                                        on-click="{{toggleImage}}">
                     </paper-icon-button>
                 </div>
-                <div horizontal center justified layout>
+                <div>
                     <core-collapse id="collapseImage" class="cardcontent box">
                         <div class="warning">Attention, les images ne sont pas sur ce serveur, mais dans l'ancien
                             serveur (pensez à vous connecter)
                         </div>
                         <div class="imgStatus">{{user.picturesStatus}}</div>
-                        <template if="{{user.main}}">
-                            <div>
-                                <!--div class="imgStatus">{{getMainImageStatus}}</div -->
-                                <img style="height: 155px;width: 155px;" src="{{urlImg + user.main.picture.$oid}}"/>
-                            </div>
-                        </template>
-                        <template if="{{user.spouse.lastname}}">
-                            <div>
-                                <!--div class="imgStatus">{{getMainImageStatus}}</div -->
-                                <img style="height: 155px;width: 155px;" src="{{urlImg + user.spouse.picture.$oid}}"/>
-                            </div>
-                        </template>
-                        <template if="{{user.children}}">
-                            <template repeat="{{child in user.children}}">
-                                <div>
+                        <div horizontal center-justified layout>
+                            <template if="{{user.main}}">
                                     <!--div class="imgStatus">{{getMainImageStatus}}</div -->
-                                    <img style="height: 155px;width: 155px;" src="{{urlImg + child.picture.$oid}}"/>
-                                </div>
+                                    <img style="height: 155px;width: 155px;" src="{{urlImg + user.main.picture.$oid}}"/>
                             </template>
-                        </template>
-
+                            <template if="{{user.spouse.lastname}}">
+                                    <!--div class="imgStatus">{{getMainImageStatus}}</div -->
+                                    <img style="height: 155px;width: 155px;"
+                                         src="{{urlImg + user.spouse.picture.$oid}}"/>
+                            </template>
+                            <template if="{{user.children}}">
+                                <template repeat="{{child in user.children}}">
+                                        <!--div class="imgStatus">{{getMainImageStatus}}</div -->
+                                        <img style="height: 155px;width: 155px;" src="{{urlImg + child.picture.$oid}}"/>
+                                </template>
+                            </template>
+                        </div>
                     </core-collapse>
                 </div>
             </div>
