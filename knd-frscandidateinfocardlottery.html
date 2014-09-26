@@ -1,0 +1,201 @@
+<link rel="import"
+      href="../polymer/polymer.html" xmlns="http://www.w3.org/1999/html"/>
+<link rel="import"
+      href="../core-ajax/core-ajax.html"/>
+
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icons/av-icons.html">
+<link rel="import" href="../core-icons/maps-icons.html">
+<link rel="import" href="../core-icons/image-icons.html">
+<link rel="import" href="../core-icons/social-icons.html">
+<link rel="import" href="../core-icons/editor-icons.html">
+<link rel="import" href="../core-selector/core-selector.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-dialog/paper-dialog-transition.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+
+<link rel="import" href="../polymer-date-picker/polymer-date-picker.html">
+
+<link rel="import"
+      href="../core-collapse/core-collapse.html"/>
+
+<!-- ajax form -->
+<!-- @Todo clean import and bower.json file -->
+<script src="../underscore/underscore.js"></script>
+<script src="../underscore.string/lib/underscore.string.js"></script>
+<!-- Moment -->
+<script src="../moment/moment.js"></script>
+<script src="../moment-timezone/moment-timezone.js"></script>
+<script src="../moment-timezone/moment-timezone-utils.js"></script>
+<!-- bootstrap actions -->
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap-theme.css"/>
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap.css"/>
+<script src="../jquery/dist/jquery.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.js"></script>
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    user="{{user}}"
+        userURL="http://localhost:8080/frsboffice/rest/user/id/538844f4e48bfd5966b940be"
+        editURL="http://localhost:8080/frsboffice/rest/user/id/53884503e48bfd5966b98266"
+        params='{}'
+
+@element knd-frscandidateinfocardlottery
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://kanedafromparis.github.io/knd-frscandidateforme
+@Todo gestion du cross site (using headers ?)
+-->
+<polymer-element name="knd-frscandidateinfocardlottery"
+                 attributes="user userURL editURL params">
+    <link rel="stylesheet"
+          href="knd-frscandidatelistform.css"/>
+    <template>
+        <core-ajax
+                id="lotteryDS"
+                auto="true"
+                url="{{userURL}}"
+                params="{}"
+                handleAs="json"
+                on-core-response="{{handleResponse}}"
+                on-core-error="{{handleError}}"
+        ></core-ajax>
+        <!--Lottery-->
+        <section class="infocard">
+            <span><div class="cardtitle">
+                <paper-icon-button id="toggleLotteryButton" icon="expand-more" on-click="{{toggleLottery}}">
+                </paper-icon-button>
+                Loteries {{user.lastname}}
+                <!-- A priori pas éditable
+                paper-icon-button id="editLotteryButton" icon="editor:mode-edit" on-click="{{editLottery}}"
+                                   hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="cancelLotteryButton" icon="close" on-click="{{cancelLottery}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="submitLotteryButton" icon="check" on-click="{{submitLottery}}" hidden="true">
+                </paper-icon-button
+                -->
+
+            </div></span>
+            <core-collapse id="collapseLottery" class="cardcontent box">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            Date de mise à jour
+                        </th>
+                        <th>
+                            Année
+                        </th>
+                        <th>
+                            Label
+                        </th>
+                        <th>
+                            Statut
+                        </th>
+                        <th>
+                            Confirmation
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <template id="lotteryTable" repeat="{{can in user.candidacies }}">
+                        <template if="{{(can.year>2011)}}">
+                        <tr>
+                            <td>{{formatDate(can.updated)}}</td>
+                            <td>{{can.year}}</td>
+                            <td>{{can.label}}</td>
+                            <td>{{can.status}}</td>
+                            <td>{{can.confirmationCommitted}}<!-- Bouton à faire--></td>
+                        </tr>
+                        </template>
+                    </template>
+                    </tbody>
+                </table>
+
+            </core-collapse>
+        </section>
+        <paper-toast id="toast" role="alert" text="{{sendingStatus}}">
+            <!-- <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div> -->
+        </paper-toast>
+    </template>
+
+    <script>
+        _.mixin(_.str.exports());
+        Polymer('knd-frscandidateinfocardlottery', {
+            publish: {
+                //user: null,
+                lotteryDisableSwitch: true,
+                backupUserEdit: null,
+                readonly: true,
+                user: null,
+                userURL:"",
+                editURL:"",
+                params:{},
+
+                observe: {
+                    user: 'validate',
+                    user: null
+                }
+
+            },
+            ready: function () {
+                this.updateUserInfo();
+            },
+            formatDate: function (date) {
+                if(date != null){
+                   return moment(date).format("YYYY-MM-DD");
+                }else{
+                    return "null";
+                }
+
+            },
+            toggleLottery: function () {
+                this.$.collapseLottery.toggle();
+                this.updateUserInfo();
+                if (this.$.toggleLotteryButton.icon == "expand-more") {
+                    this.$.toggleLotteryButton.icon = "expand-less";
+
+                } else {
+
+                    this.$.toggleLotteryButton.icon = "expand-more";
+                }
+            },
+            updateUserInfo: function () {
+                if (typeof this.user === "undefined" || this.user === null) {
+                    this.$.lotteryDS.go();
+                }
+            },
+            handleResponse: function (e) {
+                console.log("handleError : " + JSON.stringify(e.detail.response));
+                this.user = e.detail.response.user;
+            },
+            handleError: function (e) {
+
+                console.log("handleError : " + JSON.stringify(e.detail.response));
+                console.log("handleError : " + JSON.stringify(e.detail.error));
+                var message = "Error occure : " + e.detail.error+"";
+                this.sendingStatus = message;
+                this.$.toast.show();
+            },
+            validate: function (oldValue, newValue) {
+                /**
+                 * Should refresh the list
+                 */
+                console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+            }
+
+        });
+
+    </script>
+
+</polymer-element>
