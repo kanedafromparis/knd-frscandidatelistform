@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>knd-frscandidateinfoimage Demo</title>
+
+    <script src="../platform/platform.js"></script>
+
+    <link rel="stylesheet"
+          href="knd-frscandidateform.css"/>
+    <link rel="stylesheet"
+          href="knd-frscandidatelistform.css"/>
+    <link rel="import"
+          href="knd-frscandidateinfoimage.html">
+
+
+</head>
+<body unresolved>
+
+<p>An example of using <code>&lt;knd-frscandidateinfoimage></code> using a distant dynamique URL
+    (http://localhost:8080/frsboffice/rest/user/list) & :</p>
+
+
+
+<knd-frscandidateinfoimage
+        urlImg="https://www.franceservice.com/api/admin/pictures/"
+        user="{{user}}"
+        userURL="http://localhost:8080/frsboffice/rest/user/id/53884503e48bfd5966b98266"
+        urlImgStatus="http://localhost:8080/frsboffice/rest/pictures/"
+        legacyURL=""
+        params='{}'
+        ></knd-frscandidateinfoimage>
+
+
+</body>
+</html>
