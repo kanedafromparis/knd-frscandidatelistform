@@ -262,7 +262,7 @@ Element providing solution to no problem in particular.
             this.$.addChildDialog.toggle();
             if (typeof this.newChild.birthDate == "undefined"){
                 this.newChild.birthDate = {};
-                this.newChild.birthDate.$date = "2010-01-01T00:00:00";
+                this.newChild.birthDate.$date = "2010-01-01T00:00:00.000Z";
             }
         },
         submitAddChild: function () {
@@ -271,14 +271,14 @@ Element providing solution to no problem in particular.
             var child = JSON.parse(JSON.stringify(this.newChild));
 
             this.user.children.push(child);
-            this.user.childrenCount = this.localchildrenCount+1;
+            this.user.childrenCount = this.user.children.length;
             /**@Todo Check this*/
             this.$.addChildDialog.toggle();
         },
         submitRemoveChild: function (e) {
             var index = e.currentTarget.id.substr("child_".length);
             this.user.children.splice(index, 1);
-            this.localchildrenCount = this.localchildrenCount-1;
+            this.localchildrenCount = this.user.children.length;
 
         },
 
@@ -288,6 +288,7 @@ Element providing solution to no problem in particular.
             this.$.editChildrenButton.hidden = false;
             this.childDisableSwitch = true;
             this.user.childrenCount = this.localchildrenCount;
+            this.user.childrenCount = this.user.children.length;
             //@Todo Clean this into datepicker
             for (i = 0; i < this.user.children.length; i++) {
                 var m = moment(this.user.children[i].birthDate.$date);
