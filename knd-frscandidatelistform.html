@@ -53,69 +53,81 @@ navmode define the way to navigate into the resultset via URL
 <polymer-element name="knd-frscandidatelistform"
                  attributes="url navmode skip limit expandmax displaystep params editurl">
 
-    <template>
-        <section>
-            <div horizontal layout>
-                <div>
+<template>
+    <section>
+        <div horizontal layout>
+            <div>
 
-                </div>
-                <div horizontal layout>
-                    <paper-icon-button icon="av:skip-previous" on-click="{{skipPrevious}}"></paper-icon-button>
-                    <paper-icon-button icon="av:fast-rewind" on-click="{{fastRewind}}"></paper-icon-button>
-                    <paper-icon-button icon="expand-less" on-click="{{expandLess}}"></paper-icon-button>
-                    <div>de {{ (skip +1)}} à {{ (skip + limit + 1)}} sur {{end}}</div>
-                    <paper-icon-button icon="expand-more" on-click="{{expandMore}}"></paper-icon-button>
-                    <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
-                    <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
-                </div>
-                <paper-menu-button icon="search" halign="right" noTransition>
-                    <paper-item id="item_years_none" on-click="{{filterByCandidacyYear}}">None</paper-item>
-                    <paper-item id="item_years_2012" on-click="{{filterByCandidacyYear}}">2012</paper-item>
-                    <paper-item id="item_years_2013" on-click="{{filterByCandidacyYear}}">2013</paper-item>
-                    <paper-item id="item_years_2014" on-click="{{filterByCandidacyYear}}">2014</paper-item>
-                    <paper-item id="item_years_2015" on-click="{{filterByCandidacyYear}}">2015</paper-item>
-                    <paper-item id="item_years_2016" on-click="{{filterByCandidacyYear}}">2016</paper-item>
-                    <!--
-                    <template repeat="{{year,i in localYearFilter}">
-                        <paper-item id="item_years_{{i}}" on-click="{{filterByCandidacyYear}}">{{year}}</paper-item>
-                    </template>
-                    -->
-                </paper-menu-button>
             </div>
+            <div horizontal layout>
+                <paper-icon-button icon="av:skip-previous" on-click="{{skipPrevious}}"></paper-icon-button>
+                <paper-icon-button icon="av:fast-rewind" on-click="{{fastRewind}}"></paper-icon-button>
+                <paper-icon-button icon="expand-less" on-click="{{expandLess}}"></paper-icon-button>
+                <div>de {{ (skip +1)}} à {{ (skip + limit + 1)}} sur {{end}}</div>
+                <paper-icon-button icon="expand-more" on-click="{{expandMore}}"></paper-icon-button>
+                <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
+                <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
+            </div>
+            <paper-menu-button icon="search" halign="right" noTransition>
+                <paper-item id="item_years_none" on-click="{{filterByCandidacyYear}}">None</paper-item>
+                <paper-item id="item_years_2012" on-click="{{filterByCandidacyYear}}">2012</paper-item>
+                <paper-item id="item_years_2013" on-click="{{filterByCandidacyYear}}">2013</paper-item>
+                <paper-item id="item_years_2014" on-click="{{filterByCandidacyYear}}">2014</paper-item>
+                <paper-item id="item_years_2015" on-click="{{filterByCandidacyYear}}">2015</paper-item>
+                <paper-item id="item_years_2016" on-click="{{filterByCandidacyYear}}">2016</paper-item>
+                <!--
+                <template repeat="{{year,i in localYearFilter}">
+                    <paper-item id="item_years_{{i}}" on-click="{{filterByCandidacyYear}}">{{year}}</paper-item>
+                </template>
+                -->
+            </paper-menu-button>
+            <template if="{{!(currentFilterYear == 'none')}}">Filtré sur l'année: {{currentFilterYear}}</template>
+        </div>
 
-        </section>
+    </section>
 
-        <link rel="stylesheet"
-              href="knd-frscandidatelistform.css"/>
-        <core-ajax
-                id="userDataSource"
-                auto="false"
-                url="{{computedURL}}"
-                method="POST"
-                params="{{params}}"
-                handleAs="json"
-                on-core-response="{{handleResponse}}"></core-ajax>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>
-                    <div vertical layout>
-                        <div><paper-icon-button icon="filter" id="ico_sort_id" on-click="{{sortByID}}"></paper-icon-button>#</div>
-                        <div horizontal layout>
-                            <paper-input style="width:64px;" id="search_id" label="Rechercher..." value="" type="text"></paper-input>
-                            <paper-icon-button icon="search" on-click="{{searchByID}}"></paper-icon-button>
-                        </div>
+    <link rel="stylesheet"
+          href="knd-frscandidatelistform.css"/>
+    <core-ajax
+            id="userDataSource"
+            auto="false"
+            url="{{computedURL}}"
+            method="POST"
+            params="{{params}}"
+            handleAs="json"
+            on-core-response="{{handleResponse}}"></core-ajax>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>
+                <div vertical layout>
+                    <div>
+                        <paper-icon-button icon="filter" id="ico_sort_id" on-click="{{sortByID}}"></paper-icon-button>
+                        #
                     </div>
-                </th>
-                <th>
-                    <div vertical layout>
-                        <div><paper-icon-button icon="filter" id="ico_sort_LastName" on-click="{{sortByLastName}}"></paper-icon-button>Nom</div>
-                        <div horizontal layout>
-                            <paper-input style="width:64px;" id="search_lastname" label="Rechercher..." value="" type="text"></paper-input>
-                            <paper-icon-button icon="search" on-click="{{searchByLastName}}"></paper-icon-button>
-                        </div>
-                    </div></th>
-                <th><div vertical layout>
+                    <div horizontal layout>
+                        <paper-input style="width:64px;" id="search_id" label="Rechercher..." value=""
+                                     type="text"></paper-input>
+                        <paper-icon-button icon="search" on-click="{{searchByID}}"></paper-icon-button>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div vertical layout>
+                    <div>
+                        <paper-icon-button icon="filter" id="ico_sort_LastName"
+                                           on-click="{{sortByLastName}}"></paper-icon-button>
+                        Nom
+                    </div>
+                    <div horizontal layout>
+                        <paper-input style="width:64px;" id="search_lastname" label="Rechercher..." value=""
+                                     type="text"></paper-input>
+                        <paper-icon-button icon="search" on-click="{{searchByLastName}}"></paper-icon-button>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div vertical layout>
                     <div>Prénom</div>
                     <!--
                     <div horizontal layout>
@@ -124,263 +136,271 @@ navmode define the way to navigate into the resultset via URL
                         <paper-icon-button icon="search" on-click="{{skipPrevious}}"></paper-icon-button>
                     </div>
                     -->
-                </div></th>
-                <th  width="250px"><div vertical layout>
+                </div>
+            </th>
+            <th width="250px">
+                <div vertical layout>
                     <div>Email</div>
                     <div horizontal layout>
-                        <paper-input style="width:256px;" id="search_email" label="Rechercher..." value="" type="text"></paper-input>
+                        <paper-input style="width:256px;" id="search_email" label="Rechercher..." value=""
+                                     type="text"></paper-input>
                         <paper-icon-button icon="search" on-click="{{searchByEmail}}"></paper-icon-button>
                     </div>
-                </div></th>
-                <th>Birth Date</th>
-                <th width="60px">Birth Country</th>
-                <th width="60px">Statut marital (nb enfant)</th>
-                <th><div vertical layout>
+                </div>
+            </th>
+            <th>Birth Date</th>
+            <th width="60px">Birth Country</th>
+            <th width="60px">Statut marital (nb enfant)</th>
+            <th>
+                <div vertical layout>
                     <div>Status Photos</div>
                     <div horizontal layout>
                         <paper-menu-button icon="search" halign="right" noTransition>
                             <paper-item id="status_none" on-click="{{filterByPictureStatues}}">None</paper-item>
                             <template repeat="{{status,i in localPictureStatues}}">
-                                <paper-item id="status_{{i}}" on-click="{{filterByPictureStatues}}">{{status}}</paper-item>
+                                <paper-item id="status_{{i}}" on-click="{{filterByPictureStatues}}">{{status}}
+                                </paper-item>
                             </template>
                         </paper-menu-button>
                     </div>
-                </div></th>
-                <th>Date MAJ user</th>
-                <th>
-                    </th>
+                </div>
+            </th>
+            <th>Date MAJ user</th>
+        </tr>
+        </thead>
+        <tbody>
+        <template id="userTable" repeat="{{user in users}}">
+            <tr>
+                <td><a href="{{editurl+user._id.$oid}}">{{user._id.$oid}}</a></td>
+                <td>{{user.main.lastname}}</td>
+                <td>{{user.main.firstname}}</td>
+                <td>
+                    <template id="emails" repeat="{{email in user.emails}}">
+                        <div>{{email}}</div>
+                    </template>
+                </td>
+                <td><span style="display: block;">{{formatDate(user.main.birthDate.$date)}}</span></td>
+                <td>{{user.main.birthCountry}}</td>
+                <td><span title="{{user.maritalStatus}} ({{user.childrenCount}} child)">{{ formatStatutMarital(user.maritalStatus) }} ({{user.childrenCount}})</span>
+                </td>
+                <td>{{user.picturesStatus}}</td>
+                <td>{{formatDate(user.userUpdated.$date)}}</td>
             </tr>
-            </thead>
-            <tbody>
-            <template id="userTable" repeat="{{user in users}}">
-                <tr>
-                    <td><a href="{{editurl+user._id.$oid}}">{{user._id.$oid}}</a></td>
-                    <td>{{user.main.lastname}}</td>
-                    <td>{{user.main.firstname}}</td>
-                    <td>
-                        <template id="emails" repeat="{{email in user.emails}}">
-                            <div>{{email}}</div>
-                        </template>
-                    </td>
-                    <td><span style="display: block;">{{formatDate(user.main.birthDate.$date)}}</span></td>
-                    <td>{{user.main.birthCountry}}</td>
-                    <td><span title="{{user.maritalStatus}} ({{user.childrenCount}} child)">{{ formatStatutMarital(user.maritalStatus) }}({{user.childrenCount}})</span></td>
-                    <td>{{user.picturesStatus}}</td>
-                    <td>{{formatDate(user.userUpdated.$date)}}</td>
-                    <td>{{user.candidacies.length}}</td>
-                </tr>
-            </template>
-            </tbody>
-        </table>
+        </template>
+        </tbody>
+    </table>
 
-        <!-- navigation bar -->
+    <!-- navigation bar -->
 
-        <section>
-            <paper-icon-button icon="av:skip-previous" on-click="{{skipPrevious}}"></paper-icon-button>
-            <paper-icon-button icon="av:fast-rewind" on-click="{{fastRewind}}"></paper-icon-button>
-            <paper-icon-button icon="expand-less" on-click="{{expandLess}}"></paper-icon-button>
-            <paper-icon-button icon="expand-more" on-click="{{expandMore}}"></paper-icon-button>
-            <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
-            <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
-        </section>
+    <section>
+        <paper-icon-button icon="av:skip-previous" on-click="{{skipPrevious}}"></paper-icon-button>
+        <paper-icon-button icon="av:fast-rewind" on-click="{{fastRewind}}"></paper-icon-button>
+        <paper-icon-button icon="expand-less" on-click="{{expandLess}}"></paper-icon-button>
+        <paper-icon-button icon="expand-more" on-click="{{expandMore}}"></paper-icon-button>
+        <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
+        <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
+    </section>
 
-    </template>
+</template>
 
-    <script>
-        _.mixin(_.str.exports());
-        Polymer('knd-frscandidatelistform', {
-            publish: {
-                url: null,
-                computedURL: null,
-                params: {},
-                users: [],
-                skip: 0,
-                limit: 10,
-                end: 0,
-                expandmax: 50,
-                displaystep:10,
-                navmode:"URL_CALL",
-                localPictureStatues: [
-                    'UNKNOWN',
-                    'NEW',
-                    'UPLOADED',
-                    'VALIDATED',
-                    'MISSING_MAIN',
-                    'MISSING_SPOUSE',
-                    'MISSING_CHILD',
-                    'EXPIRED',
-                    'FLAGGED'
-                ],
-                localYearFilter: [
-                    "2012",
-                    "2013",
-                    "2014",
-                    "2015",
-                    "2016"
-                ],
-                observe: {
-                    url: 'validate',
-                    localYearFilter: 'validate'
-
-                }
-
-            },
-            ready: function () {
-                this.updateTable();
-            },
-            updateTable: function () {
-                this.buildRequest();
-                //this.spinner.toggle();
-                this.$.userDataSource.go();
-            },
-            handleResponse: function (e) {
-                //console.log("handleResponse : " + JSON.stringify(e.detail.response));
-                //this.spinner.toggle();
-                this.users = e.detail.response.users;
-                if (this.expandmax > e.detail.response.expandmax){
-                    this.expandmax = e.detail.response.expandmax;
-                }
-                this.end = e.detail.response.end;
-
-
-            },
-
-            validate: function (oldValue, newValue) {
-                /**
-                 * Should refresh the list
-                 */
-                console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
-            },
-            sortByID: function (e) {
-                this.params['sort']=JSON.stringify({"_id":1});
-                this.updateTable();
-            },
-            searchByID: function (e) {
-                if (this.$.search_id.value == ""){
-                    this.params['search']=null;
-                }else{
-                    this.params['search']=JSON.stringify({"_id":{ "$oid" : this.$.search_id.value}});
-                }
-                this.updateTable();
-            },
-            sortByLastName: function (e) {
-                this.params['sort']=JSON.stringify({"main.lastnameT13n":1});
-                this.updateTable();
-            },
-            searchByLastName: function (e) {
-                if (this.$.search_lastname.value == ""){
-                    this.params['search']=null;
-                }else {
-                    this.params['search'] = JSON.stringify({"main.lastnameT13n": this.$.search_lastname.value});
-                }
-                this.updateTable();
-            },
-            searchByEmail: function (e) {
-                if (this.$.search_email.value == ""){
-                    this.params['search']=null;
-                }else {
-                    this.params['search'] = JSON.stringify({"emails": this.$.search_email.value});
-                }
-                this.updateTable();
-            },
-            filterByPictureStatues: function (e) {
-                var targetID = e.currentTarget.id;
-                if (targetID == "status_none"){
-                    this.params['search']=JSON.stringify({});
-                }else{
-                    var index = targetID.substr("status_".length);
-                    this.params['search']=JSON.stringify({"picturesStatus" : this.localPictureStatues[index]});
-                }
-                this.updateTable();
-                //console.log("validate : " + e.currentTarget.id);
-            },
-            filterByCandidacyYear: function (e) {
-                var targetID = e.currentTarget.id;
-
-                if (targetID == "item_years_none"){
-                    this.params['search']=JSON.stringify({});
-                }else{
-                    var index = targetID.substr("item_years_".length);
-                    //this.params['search']=JSON.stringify({"candidacies":{"$elemMatch":{"year" : this.localYearFilter[index]}}});
-                    this.params['search']=JSON.stringify({"candidacies":{"$elemMatch":{"year" : index}}});
-                }
-                this.updateTable();
-                //console.log("validate : " + e.currentTarget.id);
-            },
-            searchByDV: function (e) {
-                this.params['search']=JSON.stringify({"candidacies.year":this.$.search_dv.value});
-                this.updateTable();
-            },
-            formatStatutMarital: function (statut){
-                if(statut==undefined){
-                    return "null";
-                }
-                return statut.substr(0, 3);
-            },
-            formatDate: function (dateValue) {
-                /**
-                 * Should refresh the list
-                 */
-                //console.log("formatDate json: " + JSON.stringify(dateValue)+ " strg:"+ dateValue.toString());
-                if(dateValue == undefined){
-                    return "null";
-                }
-                return dateValue.toString().substr(0, 10);
-            },
-            skipPrevious: function () {
-                this.skip=0;
-                this.updateTable();
-            },
-            fastRewind: function (dateValue) {
-                this.skip=this.skip-this.limit;
-                if (this.skip < this.limit){
-                    this.skip=0;
-                }
-                this.updateTable();
-            },
-            fastForward: function (dateValue) {
-                this.skip=this.skip+this.limit;
-                if (this.skip > this.end){
-                    this.skip=this.end-this.limit;
-                }
-                this.updateTable();
-            },
-            skipNext: function (dateValue) {
-                this.skip=this.end-this.limit;
-            this.updateTable();
-        },
-            expandLess: function (dateValue) {
-                this.limit = this.limit - this.displaystep;
-                if(this.limit<this.displaystep){
-                    this.limit = this.displaystep;
-                }
-            this.updateTable();
-        },
-            expandMore: function (dateValue) {
-                this.limit = this.limit + this.displaystep;
-                if(this.limit>this.expandmax){
-                    this.limit = this.expandmax;
-                }
-            this.updateTable();
-        },
-
-            buildRequest: function () {
-                if (typeof this.url == "undefined") {
-                    console.error("typeof this.url == \"undefined\")");
-                }
-                    if(this.navmode=='URL_CALL'){
-                        this.computedURL = this.url+'/'+this.skip+'/'+this.limit;
-                    }
-                    if(this.navmode=='PARAMS_CALL'){
-                        this.computedURL = this.url;
-                        this.params['skip']=this.skip;
-                        this.params['limit']=this.limit;
-                    }
+<script>
+    _.mixin(_.str.exports());
+    Polymer('knd-frscandidatelistform', {
+        publish: {
+            url: null,
+            computedURL: null,
+            params: {},
+            users: [],
+            skip: 0,
+            limit: 10,
+            end: 0,
+            expandmax: 50,
+            displaystep: 10,
+            navmode: "URL_CALL",
+            localPictureStatues: [
+                'UNKNOWN',
+                'NEW',
+                'UPLOADED',
+                'VALIDATED',
+                'MISSING_MAIN',
+                'MISSING_SPOUSE',
+                'MISSING_CHILD',
+                'EXPIRED',
+                'FLAGGED'
+            ],
+            localYearFilter: [
+                "2012",
+                "2013",
+                "2014",
+                "2015",
+                "2016"
+            ],
+            currentFilterYear: "none",
+            observe: {
+                url: 'validate',
+                localYearFilter: 'validate'
 
             }
-        });
 
-    </script>
+        },
+        ready: function () {
+            this.updateTable();
+        },
+        updateTable: function () {
+            this.buildRequest();
+            //this.spinner.toggle();
+            this.$.userDataSource.go();
+        },
+        handleResponse: function (e) {
+            //console.log("handleResponse : " + JSON.stringify(e.detail.response));
+            //this.spinner.toggle();
+            this.users = e.detail.response.users;
+            if (this.expandmax > e.detail.response.expandmax) {
+                this.expandmax = e.detail.response.expandmax;
+            }
+            this.end = e.detail.response.end;
+
+
+        },
+
+        validate: function (oldValue, newValue) {
+            /**
+             * Should refresh the list
+             */
+            console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+        },
+        sortByID: function (e) {
+            this.params['sort'] = JSON.stringify({"_id": 1});
+            this.updateTable();
+        },
+        searchByID: function (e) {
+            if (this.$.search_id.value == "") {
+                this.params['search'] = null;
+            } else {
+                this.params['search'] = JSON.stringify({"_id": { "$oid": this.$.search_id.value}});
+            }
+            this.updateTable();
+        },
+        sortByLastName: function (e) {
+            this.params['sort'] = JSON.stringify({"main.lastnameT13n": 1});
+            this.updateTable();
+        },
+        searchByLastName: function (e) {
+            if (this.$.search_lastname.value == "") {
+                this.params['search'] = null;
+            } else {
+                this.params['search'] = JSON.stringify({"main.lastnameT13n": this.$.search_lastname.value});
+            }
+            this.updateTable();
+        },
+        searchByEmail: function (e) {
+            if (this.$.search_email.value == "") {
+                this.params['search'] = null;
+            } else {
+                this.params['search'] = JSON.stringify({"emails": this.$.search_email.value});
+            }
+            this.updateTable();
+        },
+        filterByPictureStatues: function (e) {
+            var targetID = e.currentTarget.id;
+            if (targetID == "status_none") {
+                this.params['search'] = JSON.stringify({});
+            } else {
+                var index = targetID.substr("status_".length);
+                this.params['search'] = JSON.stringify({"picturesStatus": this.localPictureStatues[index]});
+            }
+            this.updateTable();
+            //console.log("validate : " + e.currentTarget.id);
+        },
+        filterByCandidacyYear: function (e) {
+            var targetID = e.currentTarget.id;
+
+            if (targetID == "item_years_none") {
+                this.params['search'] = JSON.stringify({});
+                this.currentFilterYear = "none";
+            } else {
+                this.currentFilterYear = targetID.substr("item_years_".length);
+                var index = parseInt(this.currentFilterYear);
+                //this.params['search']=JSON.stringify({"candidacies":{"$elemMatch":{"year" : this.localYearFilter[index]}}});
+                this.params['search'] = JSON.stringify({"candidacies": {"$elemMatch": {"year": index}}});
+            }
+            this.updateTable();
+            //console.log("validate : " + e.currentTarget.id);
+        },
+        searchByDV: function (e) {
+            this.params['search'] = JSON.stringify({"candidacies.year": this.$.search_dv.value});
+            this.updateTable();
+        },
+        formatStatutMarital: function (statut) {
+            if (statut == undefined) {
+                return "null";
+            }
+            return statut.substr(0, 3);
+        },
+        formatDate: function (dateValue) {
+            /**
+             * Should refresh the list
+             */
+            //console.log("formatDate json: " + JSON.stringify(dateValue)+ " strg:"+ dateValue.toString());
+            if (dateValue == undefined) {
+                return "null";
+            }
+            return dateValue.toString().substr(0, 10);
+        },
+        skipPrevious: function () {
+            this.skip = 0;
+            this.updateTable();
+        },
+        fastRewind: function (dateValue) {
+            this.skip = this.skip - this.limit;
+            if (this.skip < this.limit) {
+                this.skip = 0;
+            }
+            this.updateTable();
+        },
+        fastForward: function (dateValue) {
+            this.skip = this.skip + this.limit;
+            if (this.skip > this.end) {
+                this.skip = this.end - this.limit;
+            }
+            this.updateTable();
+        },
+        skipNext: function (dateValue) {
+            this.skip = this.end - this.limit;
+            this.updateTable();
+        },
+        expandLess: function (dateValue) {
+            this.limit = this.limit - this.displaystep;
+            if (this.limit < this.displaystep) {
+                this.limit = this.displaystep;
+            }
+            this.updateTable();
+        },
+        expandMore: function (dateValue) {
+            this.limit = this.limit + this.displaystep;
+            if (this.limit > this.expandmax) {
+                this.limit = this.expandmax;
+            }
+            this.updateTable();
+        },
+
+        buildRequest: function () {
+            if (typeof this.url == "undefined") {
+                console.error("typeof this.url == \"undefined\")");
+            }
+            if (this.navmode == 'URL_CALL') {
+                this.computedURL = this.url + '/' + this.skip + '/' + this.limit;
+            }
+            if (this.navmode == 'PARAMS_CALL') {
+                this.computedURL = this.url;
+                this.params['skip'] = this.skip;
+                this.params['limit'] = this.limit;
+            }
+
+        }
+    });
+
+</script>
 
 </polymer-element>
 <script src="../jquery/dist/jquery.js"></script>
