@@ -150,7 +150,7 @@ navmode define the way to navigate into the resultset via URL
                     </td>
                     <td><span style="display: block;">{{formatDate(user.main.birthDate.$date)}}</span></td>
                     <td>{{user.main.birthCountry}}</td>
-                    <td><span title="{{user.maritalStatus}} ({{user.childrenCount}} child)">{{ formatStatutMarital(user.maritalStatus) }}({{user.childrenCount}} c)</span></td>
+                    <td><span title="{{user.maritalStatus}} ({{user.childrenCount}} child)">{{ formatStatutMarital(user.maritalStatus) }}({{user.childrenCount}})</span></td>
                     <td>{{user.picturesStatus}}</td>
                     <td>{{formatDate(user.userUpdated.$date)}}</td>
                 </tr>
@@ -275,6 +275,9 @@ navmode define the way to navigate into the resultset via URL
                 this.updateTable();
             },
             formatStatutMarital: function (statut){
+                if(statut==undefined){
+                    return "null";
+                }
                 return statut.substr(0, 3);
             },
             formatDate: function (dateValue) {
@@ -283,7 +286,7 @@ navmode define the way to navigate into the resultset via URL
                  */
                 //console.log("formatDate json: " + JSON.stringify(dateValue)+ " strg:"+ dateValue.toString());
                 if(dateValue == undefined){
-                    return "inconnue";
+                    return "null";
                 }
                 return dateValue.toString().substr(0, 10);
             },
