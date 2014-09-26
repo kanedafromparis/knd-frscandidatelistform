@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>knd-frscandidateinfopaiment Demo</title>
+
+    <script src="../platform/platform.js"></script>
+
+    <link rel="stylesheet"
+          href="knd-frscandidateform.css"/>
+    <link rel="stylesheet"
+          href="knd-frscandidatelistform.css"/>
+    <link rel="import"
+          href="knd-frscandidateinfocardpaiment.html">
+
+
+</head>
+<body unresolved>
+
+<p>An example of using <code>&lt;knd-frscandidateinfocardpaiment></code> using a distant dynamique URL
+    (http://localhost:8080/frsboffice/rest/user/list) & :</p>
+
+
+
+<knd-frscandidateinfocardpaiment
+        user="{{user}}"
+        paimentURL="http://localhost:8080/frsboffice/rest/paiement/fromid/538844ffe48bfd5966b978ed"
+        editURL="http://localhost:8080/frsboffice/rest/paiement/fromid/538844ffe48bfd5966b978ed"
+        params='{}'
+        ></knd-frscandidateinfocardpaiment>
+
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<link rel="import"
+      href="../polymer/polymer.html" xmlns="http://www.w3.org/1999/html"/>
+<link rel="import"
+      href="../core-ajax/core-ajax.html"/>
+
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icons/av-icons.html">
+<link rel="import" href="../core-icons/maps-icons.html">
+<link rel="import" href="../core-icons/image-icons.html">
+<link rel="import" href="../core-icons/social-icons.html">
+<link rel="import" href="../core-icons/editor-icons.html">
+<link rel="import" href="../core-selector/core-selector.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-dialog/paper-dialog-transition.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+
+<link rel="import" href="../polymer-date-picker/polymer-date-picker.html">
+
+<link rel="import"
+      href="../core-collapse/core-collapse.html"/>
+
+<!-- ajax form -->
+<!-- @Todo clean import and bower.json file -->
+<script src="../underscore/underscore.js"></script>
+<script src="../underscore.string/lib/underscore.string.js"></script>
+<!-- Moment -->
+<script src="../moment/moment.js"></script>
+<script src="../moment-timezone/moment-timezone.js"></script>
+<script src="../moment-timezone/moment-timezone-utils.js"></script>
+<!-- bootstrap actions -->
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap-theme.css"/>
+<link rel="stylesheet"
+      href="../bootstrap/dist/css/bootstrap.css"/>
+<script src="../jquery/dist/jquery.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.js"></script>
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    user="{{user}}"
+        paimentURL="http://localhost:8080/frsboffice/rest/user/id/538844f4e48bfd5966b940be"
+        editURL="http://localhost:8080/frsboffice/rest/user/id/53884503e48bfd5966b98266"
+        params='{}'
+
+@element knd-frscandidateinfocardpaiment
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://kanedafromparis.github.io/knd-frscandidateforme
+@Todo gestion du cross site (using headers ?)
+-->
+<polymer-element name="knd-frscandidateinfocardpaiment"
+                 attributes="user paimentURL editURL params paiments">
+    <link rel="stylesheet"
+          href="knd-frscandidatelistform.css"/>
+    <template>
+        <core-ajax
+                id="paimentDS"
+                auto="true"
+                url="{{paimentURL}}"
+                params="{}"
+                method="POST"
+                handleAs="json"
+                on-core-response="{{handleResponse}}"
+                on-core-error="{{handleError}}"
+        ></core-ajax>
+        <!--Paiment-->
+        <section class="infocard">
+            <span><div class="cardtitle">
+                <paper-icon-button id="togglePaimentButton" icon="expand-more" on-click="{{togglePaiment}}">
+                </paper-icon-button>
+                Paiements ({{paiments.length)}}
+                <!-- A priori pas éditable
+                paper-icon-button id="editPaimentButton" icon="editor:mode-edit" on-click="{{editPaiment}}"
+                                   hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="cancelPaimentButton" icon="close" on-click="{{cancelPaiment}}" hidden="true">
+                </paper-icon-button>
+                <paper-icon-button id="submitPaimentButton" icon="check" on-click="{{submitPaiment}}" hidden="true">
+                </paper-icon-button
+                -->
+
+            </div></span>
+            <core-collapse id="collapsePaiment" class="cardcontent box">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            Date du paiement
+                        </th>
+                        <th>
+                            Montant
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <template id="paimentTable" repeat="{{p in paiments}}">
+                        <tr>
+                            <td>{{formatDate(p.updated)}}</td>
+                            <td>{{formatAmount(p.amount)}} {{p.currency}}</td>
+                            <td>{{p.Type}}</td>
+                            <td>{{p.description}}<!-- Bouton à faire--></td>
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+
+            </core-collapse>
+        </section>
+        <paper-toast id="toast" role="alert" text="{{sendingStatus}}">
+            <!-- <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div> -->
+        </paper-toast>
+    </template>
+
+    <script>
+        _.mixin(_.str.exports());
+        Polymer('knd-frscandidateinfocardpaiment', {
+            publish: {
+                //user: null,
+                paimentDisableSwitch: true,
+                backupUserEdit: null,
+                readonly: true,
+                user: null,
+                paimentURL:"",
+                editURL:"",
+                params:{},
+                paiments:null,
+
+                observe: {
+                    user: 'validate',
+                    user: null
+                }
+
+            },
+            ready: function () {
+                this.updateUserInfo();
+            },
+            formatDate: function (date) {
+                if(date != null){
+                   return moment(date).format("YYYY-MM-DD");
+                }else{
+                    return "null";
+                }
+
+            },
+            formatAmount: function (amont) {
+                if(amont != null){
+                    var flt = parseFloat(amont);
+                    //flt = flt/100;
+                   return flt;
+                }else{
+                    return "null";
+                }
+
+            },
+            togglePaiment: function () {
+                this.$.collapsePaiment.toggle();
+                this.updateInfo();
+                if (this.$.togglePaimentButton.icon == "expand-more") {
+                    this.$.togglePaimentButton.icon = "expand-less";
+
+                } else {
+
+                    this.$.togglePaimentButton.icon = "expand-more";
+                }
+            },
+            updateInfo: function () {
+                if (typeof this.paiments === "undefined" || this.paiments === null) {
+                    this.$.paimentDS.go();
+                }
+            },
+            handleResponse: function (e) {
+                console.log("handleResponse : " + JSON.stringify(e.detail.response));
+                this.paiments = e.detail.response.payments;
+            },
+            handleError: function (e) {
+
+                console.log("handleError : " + JSON.stringify(e.detail.response));
+                console.log("handleError : " + JSON.stringify(e.detail.error));
+                var message = "Error occure : " + e.detail.error+"";
+                this.sendingStatus = message;
+                this.$.toast.show();
+            },
+            validate: function (oldValue, newValue) {
+                /**
+                 * Should refresh the list
+                 */
+                console.log("validate : " + JSON.stringify(oldValue) + " - " + JSON.stringify(newValue));
+            }
+
+        });
+
+    </script>
+
+</polymer-element>
