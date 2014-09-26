@@ -6,6 +6,11 @@ tr:nth-child(odd) {background: #FFF}
 tbody>tr:hover{background: #ffe385
 }
 
+.imgStatus{
+    height: 24px;
+    width: 24px;
+}
+
 .loginPassword {
     height: 24px;
     width: 64px;
