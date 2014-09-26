@@ -140,6 +140,8 @@ navmode define the way to navigate into the resultset via URL
                     </div>
                 </div></th>
                 <th>Date MAJ user</th>
+                <th>
+                    </th>
             </tr>
             </thead>
             <tbody>
@@ -158,6 +160,7 @@ navmode define the way to navigate into the resultset via URL
                     <td><span title="{{user.maritalStatus}} ({{user.childrenCount}} child)">{{ formatStatutMarital(user.maritalStatus) }}({{user.childrenCount}})</span></td>
                     <td>{{user.picturesStatus}}</td>
                     <td>{{formatDate(user.userUpdated.$date)}}</td>
+                    <td>{{user.candidacies.length}}</td>
                 </tr>
             </template>
             </tbody>
@@ -200,6 +203,13 @@ navmode define the way to navigate into the resultset via URL
                     'MISSING_CHILD',
                     'EXPIRED',
                     'FLAGGED'
+                ],
+                localYearFilter: [
+                    "2012",
+                    "2013",
+                    "2014",
+                    "2015",
+                    "2016"
                 ],
                 observe: {
                     url: 'validate'
@@ -265,12 +275,24 @@ navmode define the way to navigate into the resultset via URL
                 this.updateTable();
             },
             filterByPictureStatues: function (e) {
-                var targetID = e.currentTarget.id
+                var targetID = e.currentTarget.id;
                 if (targetID == "status_none"){
                     this.params['search']=JSON.stringify({});
                 }else{
                     var index = targetID.substr("status_".length);
                     this.params['search']=JSON.stringify({"picturesStatus" : this.localPictureStatues[index]});
+                }
+                this.updateTable();
+                //console.log("validate : " + e.currentTarget.id);
+            },
+            filterByCandicacyYear: function (e) {
+                var targetID = e.currentTarget.id;
+
+                if (targetID == "item_years_none"){
+                    this.params['search']=JSON.stringify({});
+                }else{
+                    var index = targetID.substr("item_years_".length);
+                    this.params['search']=JSON.stringify({"candidacies":{"$elemMatch":{"year" : this.localYearFilter[index]}}});
                 }
                 this.updateTable();
                 //console.log("validate : " + e.currentTarget.id);
