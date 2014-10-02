@@ -20,6 +20,13 @@ tbody>tr:hover{background: #ffe385
     height: 24px;
     width: 128px;
 }
+.infocard{
+    border: 1px #656565 solid;
+    border-radius: 12px;
+}
+.cardtitle{
+    color: #fb8c00;
+}
 
 core-icon-button {
     cursor: pointer;
@@ -118,3 +125,41 @@ section {
     background-color: #357EBD;
     border-color: #3071a9;
     color: #fff; }
+
+.infocard {
+    border-width: thin;
+    border-style: solid;
+    border-color: black;
+}
+
+.cardtitle {
+    border-width: thin;
+    border-style: solid;
+    border-color: black;
+    background: lightgrey;
+    font-weight: bold;
+}
+.cardtitle span{
+    position:relative;
+    top:-15px;
+}
+paper-radio-group{
+    border-width: thin;
+    border-style: solid;
+    border-color: black;
+    padding: 10px;
+    border-radius: 12px;
+    margin: 10px;
+}
+.cardcontent {
+    border-width: thin;
+    border-style: solid;
+    border-color: black;
+    padding: 10px;
+
+    background: inherit;
+}
+
+polymer-date-picker{
+    z-index: 2000;
+}

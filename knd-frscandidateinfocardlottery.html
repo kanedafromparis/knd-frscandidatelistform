@@ -57,9 +57,9 @@ Element providing solution to no problem in particular.
 -->
 <polymer-element name="knd-frscandidateinfocardlottery"
                  attributes="user userURL editURL params">
-    <link rel="stylesheet"
-          href="knd-frscandidatelistform.css"/>
     <template>
+        <link rel="stylesheet"
+              href="knd-frscandidatelistform.css"/>
         <core-ajax
                 id="lotteryDS"
                 auto="true"
@@ -71,10 +71,10 @@ Element providing solution to no problem in particular.
         ></core-ajax>
         <!--Lottery-->
         <section class="infocard">
-            <span><div class="cardtitle">
-                <paper-icon-button id="toggleLotteryButton" icon="expand-more" on-click="{{toggleLottery}}">
+            <div class="cardtitle">
+                <paper-icon-button id="toggleLotteryButton" icon="unfold-more" on-click="{{toggleLottery}}">
                 </paper-icon-button>
-                Loteries {{user.lastname}}
+                <span>Loteries {{user.lastname}}</span>
                 <!-- A priori pas éditable
                 paper-icon-button id="editLotteryButton" icon="editor:mode-edit" on-click="{{editLottery}}"
                                    hidden="true">
@@ -85,7 +85,7 @@ Element providing solution to no problem in particular.
                 </paper-icon-button
                 -->
 
-            </div></span>
+            </div>
             <core-collapse id="collapseLottery" class="cardcontent box">
                 <table class="table table-striped">
                     <thead>
@@ -162,12 +162,12 @@ Element providing solution to no problem in particular.
             toggleLottery: function () {
                 this.$.collapseLottery.toggle();
                 this.updateUserInfo();
-                if (this.$.toggleLotteryButton.icon == "expand-more") {
-                    this.$.toggleLotteryButton.icon = "expand-less";
+                if (this.$.toggleLotteryButton.icon == "unfold-more") {
+                    this.$.toggleLotteryButton.icon = "unfold-less";
 
                 } else {
 
-                    this.$.toggleLotteryButton.icon = "expand-more";
+                    this.$.toggleLotteryButton.icon = "unfold-more";
                 }
             },
             updateUserInfo: function () {
@@ -176,7 +176,6 @@ Element providing solution to no problem in particular.
                 }
             },
             handleResponse: function (e) {
-                console.log("handleError : " + JSON.stringify(e.detail.response));
                 this.user = e.detail.response.user;
             },
             handleError: function (e) {

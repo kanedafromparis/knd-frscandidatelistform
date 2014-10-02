@@ -55,9 +55,9 @@ Element providing solution to no problem in particular.
 -->
 <polymer-element name="knd-frscandidateinfocardchildren"
                  attributes="user editURL readonly">
-<link rel="stylesheet"
-      href="knd-frscandidatelistform.css"/>
 <template>
+    <link rel="stylesheet"
+          href="knd-frscandidatelistform.css"/>
     <div>
 
 
@@ -65,9 +65,9 @@ Element providing solution to no problem in particular.
 
     <!--Children-->
     <section class="infocard">
-            <span><div class="cardtitle">Enfants
-                <paper-icon-button id="toggleChildrenButton" icon="expand-more" on-click="{{toggleChildren}}">
-                </paper-icon-button>
+            <span><div class="cardtitle">
+                <paper-icon-button id="toggleChildrenButton" icon="unfold-more" on-click="{{toggleChildren}}">
+                </paper-icon-button><span>Enfants</span>
                 <paper-icon-button id="editChildrenButton" icon="editor:mode-edit" on-click="{{editChildren}}" hidden="true">
                 </paper-icon-button>
                 <paper-icon-button id="cancelChildrenButton" icon="close" on-click="{{cancelChildren}}" hidden="true">
@@ -203,13 +203,13 @@ Element providing solution to no problem in particular.
         },
         toggleChildren: function () {
             this.$.collapseChildren.toggle();
-            if (this.$.toggleChildrenButton.icon == "expand-more") {
-                this.$.toggleChildrenButton.icon = "expand-less";
+            if (this.$.toggleChildrenButton.icon == "unfold-more") {
+                this.$.toggleChildrenButton.icon = "unfold-less";
                 this.$.editChildrenButton.hidden = false;
                 this.localchildrenCount = this.user.childrenCount;
             } else {
                 this.cancelChildren();
-                this.$.toggleChildrenButton.icon = "expand-more";
+                this.$.toggleChildrenButton.icon = "unfold-more";
                 this.$.editChildrenButton.hidden = true;
                 this.$.cancelChildrenButton.hidden = true;
                 this.$.cancelChildrenButton.hidden = true;

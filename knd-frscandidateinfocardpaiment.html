@@ -57,9 +57,9 @@ Element providing solution to no problem in particular.
 -->
 <polymer-element name="knd-frscandidateinfocardpaiment"
                  attributes="user paimentURL editURL params paiments">
-    <link rel="stylesheet"
-          href="knd-frscandidatelistform.css"/>
     <template>
+        <link rel="stylesheet"
+              href="knd-frscandidatelistform.css"/>
         <core-ajax
                 id="paimentDS"
                 auto="true"
@@ -72,10 +72,10 @@ Element providing solution to no problem in particular.
         ></core-ajax>
         <!--Paiment-->
         <section class="infocard">
-            <span><div class="cardtitle">
-                <paper-icon-button id="togglePaimentButton" icon="expand-more" on-click="{{togglePaiment}}">
+            <div class="cardtitle">
+                <paper-icon-button id="togglePaimentButton" icon="unfold-more" on-click="{{togglePaiment}}">
                 </paper-icon-button>
-                Paiements ({{paiments.length)}}
+                <span>Paiements ({{paiments.length}})</span>
                 <!-- A priori pas éditable
                 paper-icon-button id="editPaimentButton" icon="editor:mode-edit" on-click="{{editPaiment}}"
                                    hidden="true">
@@ -86,7 +86,7 @@ Element providing solution to no problem in particular.
                 </paper-icon-button
                 -->
 
-            </div></span>
+            </div>
             <core-collapse id="collapsePaiment" class="cardcontent box">
                 <table class="table table-striped">
                     <thead>
@@ -110,7 +110,7 @@ Element providing solution to no problem in particular.
                         <tr>
                             <td>{{formatDate(p.updated)}}</td>
                             <td>{{formatAmount(p.amount)}} {{p.currency}}</td>
-                            <td>{{p.Type}}</td>
+                            <td>{{p.type}}</td>
                             <td>{{p.description}}<!-- Bouton à faire--></td>
                         </tr>
                     </template>
@@ -145,7 +145,7 @@ Element providing solution to no problem in particular.
 
             },
             ready: function () {
-                this.updateUserInfo();
+                this.updateInfo();
             },
             formatDate: function (date) {
                 if(date != null){
@@ -168,12 +168,12 @@ Element providing solution to no problem in particular.
             togglePaiment: function () {
                 this.$.collapsePaiment.toggle();
                 this.updateInfo();
-                if (this.$.togglePaimentButton.icon == "expand-more") {
-                    this.$.togglePaimentButton.icon = "expand-less";
+                if (this.$.togglePaimentButton.icon == "unfold-more") {
+                    this.$.togglePaimentButton.icon = "unfold-less";
 
                 } else {
 
-                    this.$.togglePaimentButton.icon = "expand-more";
+                    this.$.togglePaimentButton.icon = "unfold-more";
                 }
             },
             updateInfo: function () {
@@ -182,7 +182,6 @@ Element providing solution to no problem in particular.
                 }
             },
             handleResponse: function (e) {
-                console.log("handleResponse : " + JSON.stringify(e.detail.response));
                 this.paiments = e.detail.response.payments;
             },
             handleError: function (e) {

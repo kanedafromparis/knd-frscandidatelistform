@@ -55,18 +55,19 @@ Element providing solution to no problem in particular.
 -->
 <polymer-element name="knd-frscandidateinfocardmain"
                  attributes="user editURL readonly">
-    <link rel="stylesheet"
-          href="knd-frscandidatelistform.css"/>
     <template>
+        <link rel="stylesheet"
+              href="knd-frscandidatelistform.css"/>
+
         <div>
 
 
         </div>
         <!--Principal-->
         <section class="infocard">
-            <span><div class="cardtitle">Principal
-                <paper-icon-button id="togglePrincipalButton" icon="expand-more" on-click="{{toggleMain}}">
-                </paper-icon-button>
+            <div class="cardtitle">
+                <paper-icon-button id="togglePrincipalButton" icon="unfold-more" on-click="{{toggleMain}}">
+                </paper-icon-button><span>Principal</span>
                 <paper-icon-button id="editMainButton" icon="editor:mode-edit" on-click="{{editMain}}" hidden="true">
                 </paper-icon-button>
                 <paper-icon-button id="cancelMainButton" icon="close" on-click="{{cancelMain}}" hidden="true">
@@ -74,7 +75,7 @@ Element providing solution to no problem in particular.
                 <paper-icon-button id="submitMainButton" icon="check" on-click="{{submitMain}}" hidden="true">
                 </paper-icon-button>
 
-            </div></span>
+            </div>
             <core-collapse id="collapseMain" class="cardcontent box">
                 <!-- @Todo utiliser template if {{mainDisableSwitch}} pour différentier plus la visualisation de l'édition -->
                 <div horizontal layout>
@@ -89,12 +90,12 @@ Element providing solution to no problem in particular.
                              disabled="{{mainDisableSwitch}}"></paper-input>
                 <paper-input id="mainBirthCountry_input" floatingLabel label="Pays de Naissance (code exemple FR:France)" value="{{user.main.birthCountry}}" type="text" required="true" disabled="{{mainDisableSwitch}}"></paper-input>
             </div>
-
-                <paper-radio-group id="mainGender_input" selected="{{user.main.gender}}">
+                <paper-radio-group id="mainGender_input" selected="{{user.main.gender}}" style="border: none">
                     <paper-radio-button name="MALE" label="homme" disabled="{{mainDisableSwitch}}"></paper-radio-button>
                     <paper-radio-button name="FEMALE" label="femme" disabled="{{mainDisableSwitch}}"></paper-radio-button>
                 </paper-radio-group>
-                <div><span>Date de naissance</span>
+                <div horizontal layout>
+                    <span>Date de naissance</span>
                     <polymer-date-picker-trigger selectedDate="2014-08-01" opened="false"></polymer-date-picker-trigger>
                     <input id="mainBirthDateName_input" value="{{user.main.birthDate.$date}}"
                            on-click="{{toggleDatePicker}}"
@@ -108,6 +109,7 @@ Element providing solution to no problem in particular.
                 </div>
                 <div horizontal layout>
                     <paper-radio-group id="maritalStatus_input" selected="{{user.maritalStatus}}">
+                        <label>Statut marital</label><br>
                         <paper-radio-button name="UNKNOWN" label="inconnu / erreur de données" disabled="{{mainDisableSwitch}}"></paper-radio-button>
                         <br/>
                         <paper-radio-button name="BACHELOR" label="celibataire" disabled="{{mainDisableSwitch}}"></paper-radio-button>
@@ -124,6 +126,7 @@ Element providing solution to no problem in particular.
                 </div>
                 <div horizontal layout>
                     <paper-radio-group id="education_input" selected="{{user.main.education}}">
+                        <label>Niveau d'éducation</label><br>
                         <paper-radio-button name="UNKNOWN" label="inconnu / erreur de données" disabled="{{mainDisableSwitch}}"></paper-radio-button>
                         <br/>
                         <paper-radio-button name="PRIMARY_SCHOOL_ONLY" label="étudié en école primaire seulement (primary school only)." disabled="{{mainDisableSwitch}}"></paper-radio-button>
@@ -196,12 +199,12 @@ Element providing solution to no problem in particular.
             },
             toggleMain: function () {
                 this.$.collapseMain.toggle();
-                if (this.$.togglePrincipalButton.icon == "expand-more") {
-                    this.$.togglePrincipalButton.icon = "expand-less";
+                if (this.$.togglePrincipalButton.icon == "unfold-more") {
+                    this.$.togglePrincipalButton.icon = "unfold-less";
                     this.$.editMainButton.hidden = false;
                 } else {
                     this.cancelMain();
-                    this.$.togglePrincipalButton.icon = "expand-more";
+                    this.$.togglePrincipalButton.icon = "unfold-more";
                     this.$.editMainButton.hidden = true;
                     this.$.cancelMainButton.hidden = true;
                     this.$.submitMainButton.hidden = true;

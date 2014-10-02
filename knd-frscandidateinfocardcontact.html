@@ -57,9 +57,9 @@ Element providing solution to no problem in particular.
 -->
 <polymer-element name="knd-frscandidateinfocardcontact"
                  attributes="user editURL readonly">
-    <link rel="stylesheet"
-          href="knd-frscandidatelistform.css"/>
     <template>
+        <link rel="stylesheet"
+              href="knd-frscandidatelistform.css"/>
         <div>
 
 
@@ -67,9 +67,9 @@ Element providing solution to no problem in particular.
 
         <!--Contact-->
         <section class="infocard">
-            <span><div class="cardtitle">Contact
-                <paper-icon-button id="toggleContactButton" icon="expand-more" on-click="{{toggleContact}}">
-                </paper-icon-button>
+            <span><div class="cardtitle">
+                <paper-icon-button id="toggleContactButton" icon="unfold-more" on-click="{{toggleContact}}">
+                </paper-icon-button><span>Contact</span>
                 <paper-icon-button id="editContactButton" icon="editor:mode-edit" on-click="{{editContact}}" hidden="true">
                 </paper-icon-button>
                 <paper-icon-button id="cancelContactButton" icon="close" on-click="{{cancelContact}}" hidden="true">
@@ -177,12 +177,12 @@ Element providing solution to no problem in particular.
             },
             toggleContact: function () {
                 this.$.collapseContact.toggle();
-                if (this.$.toggleContactButton.icon=="expand-more"){
-                    this.$.toggleContactButton.icon="expand-less";
+                if (this.$.toggleContactButton.icon=="unfold-more"){
+                    this.$.toggleContactButton.icon="unfold-less";
                     this.$.editContactButton.hidden=false;
                 }else{
                     this.cancelContact();
-                    this.$.toggleContactButton.icon="expand-more";
+                    this.$.toggleContactButton.icon="unfold-more";
                     this.$.editContactButton.hidden=true;
                     this.$.cancelContactButton.hidden=true;
                     this.$.cancelContactButton.hidden=true;

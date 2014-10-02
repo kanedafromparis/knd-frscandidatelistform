@@ -55,9 +55,9 @@ Element providing solution to no problem in particular.
 -->
 <polymer-element name="knd-frscandidateinfocardspouse"
                  attributes="user editURL readonly">
-    <link rel="stylesheet"
-          href="knd-frscandidatelistform.css"/>
     <template>
+        <link rel="stylesheet"
+              href="knd-frscandidatelistform.css"/>
         <div>
 
 
@@ -65,9 +65,9 @@ Element providing solution to no problem in particular.
 
         <!--Spouse-->
         <section class="infocard">
-            <span><div class="cardtitle">Epoux
-                <paper-icon-button id="toggleSpouseButton" icon="expand-more" on-click="{{toggleSpouse}}">
-                </paper-icon-button>
+            <span><div class="cardtitle">
+                <paper-icon-button id="toggleSpouseButton" icon="unfold-more" on-click="{{toggleSpouse}}">
+                </paper-icon-button><span>Epoux</span>
                 <paper-icon-button id="editSpouseButton" icon="editor:mode-edit" on-click="{{editSpouse}}" hidden="true">
                 </paper-icon-button>
                 <paper-icon-button id="cancelSpouseButton" icon="close" on-click="{{cancelSpouse}}" hidden="true">
@@ -92,12 +92,13 @@ Element providing solution to no problem in particular.
                                  disabled="{{spouseDisableSwitch}}"></paper-input>
                 </div>
                 <div>
-                    <paper-radio-group id="SpouseGender_input" selected="{{user.spouse.gender}}">
+                    <paper-radio-group id="SpouseGender_input" selected="{{user.spouse.gender}}" style="border:none">
                         <paper-radio-button name="MALE" label="homme" disabled="{{spouseDisableSwitch}}"></paper-radio-button>
                         <paper-radio-button name="FEMALE" label="femme" disabled="{{spouseDisableSwitch}}"></paper-radio-button>
                     </paper-radio-group>
                 </div>
                 <div>
+                    <label>Date de naissance</label>
                     <polymer-date-picker-trigger selectedDate="2014-08-01" opened="false"></polymer-date-picker-trigger>
                     <input id="SpouseBirthDateName_input" value="{{user.spouse.birthDate.$date}}"
                            on-click="{{toggleDatePicker}}"
@@ -112,6 +113,7 @@ Element providing solution to no problem in particular.
 
                 <div horizontal layout>
                     <paper-radio-group id="education_input" selected="{{user.spouse.education}}">
+                        <label>Niveau d'éducation</label><br>
                         <paper-radio-button name="UNKNOWN" label="inconnu / erreur de données" disabled="{{spouseDisableSwitch}}"></paper-radio-button>
                         <br/>
                         <paper-radio-button name="PRIMARY_SCHOOL_ONLY" label="étudié en école primaire seulement (primary school only)." disabled="{{spouseDisableSwitch}}"></paper-radio-button>
@@ -185,12 +187,12 @@ Element providing solution to no problem in particular.
             },
             toggleSpouse: function () {
                 this.$.collapseSpouse.toggle();
-                if (this.$.toggleSpouseButton.icon == "expand-more") {
-                    this.$.toggleSpouseButton.icon = "expand-less";
+                if (this.$.toggleSpouseButton.icon == "unfold-more") {
+                    this.$.toggleSpouseButton.icon = "unfold-less";
                     this.$.editSpouseButton.hidden = false;
                 } else {
                     this.cancelSpouse();
-                    this.$.toggleSpouseButton.icon = "expand-more";
+                    this.$.toggleSpouseButton.icon = "unfold-more";
                     this.$.editSpouseButton.hidden = true;
                     this.$.cancelSpouseButton.hidden = true;
                     this.$.cancelSpouseButton.hidden = true;

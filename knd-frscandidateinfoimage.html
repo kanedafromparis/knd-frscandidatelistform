@@ -51,16 +51,16 @@ https://www.franceservice.com/api/admin/pictures/
 -->
 <polymer-element name="knd-frscandidateinfoimage"
                  attributes="urlImg user userUrl urlImgStatus params">
-    <link rel="stylesheet"
-          href="knd-frscandidatelistform.css"/>
 
     <template>
-        <section>
-            <div style="border: 1px #656565 solid;border-radius: 12px;">
-                <div class="cardtitle">Images
-                    <paper-icon-button id="toggleImageButton" iconSize="12" icon="expand-more"
+        <link rel="stylesheet"
+              href="knd-frscandidatelistform.css"/>
+        <section class="infocard">
+
+                <div class="cardtitle">
+                    <paper-icon-button id="toggleImageButton" iconSize="12" icon="unfold-more"
                                        on-click="{{toggleImage}}">
-                    </paper-icon-button>
+                    </paper-icon-button><span>Images</span>
                 </div>
                 <div>
                     <core-collapse id="collapseImage" class="cardcontent box">
@@ -87,7 +87,6 @@ https://www.franceservice.com/api/admin/pictures/
                         </div>
                     </core-collapse>
                 </div>
-            </div>
         </section>
         <paper-toast id="toast" role="alert" text="{{sendingStatus}}">
             <!-- <div style="color: #eeff41;" onclick="console.log('RETRY')">Retry</div> -->
@@ -139,13 +138,13 @@ https://www.franceservice.com/api/admin/pictures/
             },
             toggleImage: function () {
                 this.$.collapseImage.toggle();
-                if (this.$.toggleImageButton.icon == "expand-more") {
+                if (this.$.toggleImageButton.icon == "unfold-more") {
                     this.updateUserInfo();
-                    this.$.toggleImageButton.icon = "expand-less";
+                    this.$.toggleImageButton.icon = "unfold-less";
                     //this.$.editImageButton.hidden = false;
                 } else {
                     //this.cancelImage();
-                    this.$.toggleImageButton.icon = "expand-more";
+                    this.$.toggleImageButton.icon = "unfold-more";
                     /*
                      this.$.editImageButton.hidden = true;
                      this.$.cancelImageButton.hidden = true;

@@ -57,9 +57,9 @@ Element providing solution to no problem in particular.
 -->
 <polymer-element name="knd-frscandidateinfocardparents"
                  attributes="user editURL readonly">
-    <link rel="stylesheet"
-          href="knd-frscandidatelistform.css"/>
     <template>
+        <link rel="stylesheet"
+              href="knd-frscandidatelistform.css"/>
         <div>
 
 
@@ -67,9 +67,9 @@ Element providing solution to no problem in particular.
 
         <!--Parents-->
         <section class="infocard">
-            <span><div class="cardtitle">Parents
-                <paper-icon-button id="toggleParentsButton" icon="expand-more" on-click="{{toggleParents}}">
-                </paper-icon-button>
+            <span><div class="cardtitle">
+                <paper-icon-button id="toggleParentsButton" icon="unfold-more" on-click="{{toggleParents}}">
+                </paper-icon-button><span>Parents</span>
                 <paper-icon-button id="editParentsButton" icon="editor:mode-edit" on-click="{{editParents}}" hidden="true">
                 </paper-icon-button>
                 <paper-icon-button id="cancelParentsButton" icon="close" on-click="{{cancelParents}}" hidden="true">
@@ -171,13 +171,13 @@ Element providing solution to no problem in particular.
 
             toggleParents: function () {
                 this.$.collapseParents.toggle();
-                if (this.$.toggleParentsButton.icon=="expand-more"){
+                if (this.$.toggleParentsButton.icon=="unfold-more"){
                     this.updateData;
-                    this.$.toggleParentsButton.icon="expand-less";
+                    this.$.toggleParentsButton.icon="unfold-less";
                     this.$.editParentsButton.hidden=false;
                 }else{
                     this.cancelParents();
-                    this.$.toggleParentsButton.icon="expand-more";
+                    this.$.toggleParentsButton.icon="unfold-more";
                     this.$.editParentsButton.hidden=true;
                     this.$.cancelParentsButton.hidden=true;
                     this.$.cancelParentsButton.hidden=true;

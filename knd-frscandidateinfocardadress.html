@@ -55,9 +55,9 @@ Element providing solution to no problem in particular.
 -->
 <polymer-element name="knd-frscandidateinfocardadress"
                  attributes="user editURL readonly">
-    <link rel="stylesheet"
-          href="knd-frscandidatelistform.css"/>
     <template>
+        <link rel="stylesheet"
+              href="knd-frscandidatelistform.css"/>
         <div>
 
 
@@ -65,9 +65,9 @@ Element providing solution to no problem in particular.
 
         <!--Adress-->
         <section class="infocard">
-            <span><div class="cardtitle">Adresses
-                <paper-icon-button id="toggleAdressButton" iconSize="12" icon="expand-more" on-click="{{toggleAdress}}"  >
-                </paper-icon-button>
+            <span><div class="cardtitle">
+                <paper-icon-button id="toggleAdressButton" iconSize="12" icon="unfold-more" on-click="{{toggleAdress}}"  >
+                </paper-icon-button><span>Adresses</span>
                 <paper-icon-button id="editAdressButton" iconSize="12" icon="editor:mode-edit" on-click="{{editAdress}}" offsetY="5"   hidden="true">
                 </paper-icon-button>
                 <paper-icon-button id="cancelAdressButton" iconSize="12" icon="close" on-click="{{cancelAdress}}" offsetY="5"  hidden="true">
@@ -132,12 +132,12 @@ Element providing solution to no problem in particular.
             },
             toggleAdress: function () {
                 this.$.collapseAdress.toggle();
-                if (this.$.toggleAdressButton.icon == "expand-more") {
-                    this.$.toggleAdressButton.icon = "expand-less";
+                if (this.$.toggleAdressButton.icon == "unfold-more") {
+                    this.$.toggleAdressButton.icon = "unfold-less";
                     this.$.editAdressButton.hidden = false;
                 } else {
                     this.cancelAdress();
-                    this.$.toggleAdressButton.icon = "expand-more";
+                    this.$.toggleAdressButton.icon = "unfold-more";
                     this.$.editAdressButton.hidden = true;
                     this.$.cancelAdressButton.hidden = true;
                     this.$.cancelAdressButton.hidden = true;

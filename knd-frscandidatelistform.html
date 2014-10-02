@@ -54,6 +54,8 @@ navmode define the way to navigate into the resultset via URL
                  attributes="url navmode skip limit expandmax displaystep params editurl">
 
 <template>
+    <link rel="stylesheet"
+          href="knd-frscandidatelistform.css"/>
     <section>
         <div horizontal layout>
             <div>
@@ -68,20 +70,26 @@ navmode define the way to navigate into the resultset via URL
                 <paper-icon-button icon="av:fast-forward" on-click="{{fastForward}}"></paper-icon-button>
                 <paper-icon-button icon="av:skip-next" on-click="{{skipNext}}"></paper-icon-button>
             </div>
-            <paper-menu-button icon="search" halign="right" noTransition>
-                <paper-item id="item_years_none" on-click="{{filterByCandidacyYear}}">None</paper-item>
-                <paper-item id="item_years_2012" on-click="{{filterByCandidacyYear}}">2012</paper-item>
-                <paper-item id="item_years_2013" on-click="{{filterByCandidacyYear}}">2013</paper-item>
-                <paper-item id="item_years_2014" on-click="{{filterByCandidacyYear}}">2014</paper-item>
-                <paper-item id="item_years_2015" on-click="{{filterByCandidacyYear}}">2015</paper-item>
-                <paper-item id="item_years_2016" on-click="{{filterByCandidacyYear}}">2016</paper-item>
-                <!--
-                <template repeat="{{year,i in localYearFilter}">
-                    <paper-item id="item_years_{{i}}" on-click="{{filterByCandidacyYear}}">{{year}}</paper-item>
-                </template>
-                -->
-            </paper-menu-button>
-            <template if="{{!(currentFilterYear == 'none')}}">Filtré sur l'année: {{currentFilterYear}}</template>
+
+            <div style="margin-left:100px" horizontal layout>
+                Sélectionnez la lottery :
+                <paper-menu-button icon="search" halign="right" noTransition>
+                    <paper-item id="item_years_none" on-click="{{filterByCandidacyYear}}">None</paper-item>
+                    <paper-item id="item_years_2012" on-click="{{filterByCandidacyYear}}">DV 2012</paper-item>
+                    <paper-item id="item_years_2013" on-click="{{filterByCandidacyYear}}">DV 2013</paper-item>
+                    <paper-item id="item_years_2014" on-click="{{filterByCandidacyYear}}">DV 2014</paper-item>
+                    <paper-item id="item_years_2015" on-click="{{filterByCandidacyYear}}">DV 2015</paper-item>
+                    <paper-item id="item_years_2016" on-click="{{filterByCandidacyYear}}">DV 2016</paper-item>
+                    <!--
+                    <template repeat="{{year,i in localYearFilter}">
+                        <paper-item id="item_years_{{i}}" on-click="{{filterByCandidacyYear}}">{{year}}</paper-item>
+                    </template>
+                    -->
+                </paper-menu-button>
+                <template if="{{(currentFilterYear == 'none')}}">Les dossiers de toutes les années</template>
+
+                <template if="{{!(currentFilterYear == 'none')}}">Filtré sur l'année: {{currentFilterYear}}</template>
+            </div>
         </div>
 
     </section>
