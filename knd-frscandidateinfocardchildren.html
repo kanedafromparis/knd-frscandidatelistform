@@ -272,14 +272,16 @@ Element providing solution to no problem in particular.
 
             this.user.children.push(child);
             this.user.childrenCount = this.user.children.length;
+            this.localchildrenCount = this.user.children.length;
+            console.log("nbre:"+this.localchildrenCount);
             /**@Todo Check this*/
             this.$.addChildDialog.toggle();
         },
         submitRemoveChild: function (e) {
             var index = e.currentTarget.id.substr("child_".length);
             this.user.children.splice(index, 1);
+            this.user.childrenCount = this.user.children.length;
             this.localchildrenCount = this.user.children.length;
-
         },
 
         submitChildren: function () {
@@ -287,7 +289,7 @@ Element providing solution to no problem in particular.
             this.$.submitChildrenButton.hidden = true;
             this.$.editChildrenButton.hidden = false;
             this.childDisableSwitch = true;
-            this.user.childrenCount = this.localchildrenCount;
+            this.localchildrenCount = this.user.children.length;
             this.user.childrenCount = this.user.children.length;
             //@Todo Clean this into datepicker
             for (i = 0; i < this.user.children.length; i++) {
