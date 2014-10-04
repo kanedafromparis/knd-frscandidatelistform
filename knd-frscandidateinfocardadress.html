@@ -171,10 +171,6 @@ Element providing solution to no problem in particular.
                 this.$.editAdressButton.hidden = false;
                 this.adressDisableSwitch = true;
                 //
-                //@Todo Clean this into datepicker
-                var m = moment(this.user.adress.birthDate.$date);
-                this.user.adress.birthDate.$date = m.format();
-                //
                 this.params = {};
                 this.params["user"] = JSON.stringify(this.user);
                 this.params["traceAction"] = "true";

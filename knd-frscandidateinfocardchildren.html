@@ -267,7 +267,7 @@ Element providing solution to no problem in particular.
         },
         submitAddChild: function () {
             var m =  moment(this.newChild.birthDate.$date);
-            this.newChild.birthDate.$date = m.format("YYYY-MM-DDTHH:mm:00.000")+"Z";
+            this.newChild.birthDate.$date = m.format("YYYY-MM-DD")+"T00:00:00.000Z";
             var child = JSON.parse(JSON.stringify(this.newChild));
 
             this.user.children.push(child);
@@ -294,7 +294,7 @@ Element providing solution to no problem in particular.
             //@Todo Clean this into datepicker
             for (i = 0; i < this.user.children.length; i++) {
                 var m = moment(this.user.children[i].birthDate.$date);
-                this.user.children[i].birthDate.$date = m.format("YYYY-MM-DDTHH:mm:00.000")+"Z";
+                this.user.children[i].birthDate.$date = m.format("YYYY-MM-DD")+"T00:00:00.000Z";;
             }
             //
             this.params = {};
