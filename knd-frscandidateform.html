@@ -46,7 +46,9 @@ Element providing solution to no problem in particular.
                  attributes="url params editurl">
 
     <template>
-        <div>Modification de {{user.main.firstname}} {{user.main.lastname}} (id: {{user._id.$oid}} )</div>
+        <div>Modification de {{user.main.firstname}} {{user.main.lastname}} (id: {{user._id.$oid}} )
+        <template if="{{user.deleted}}"><span style="color:red">Dossier supprimé</span></template>
+        </div>
         <link rel="stylesheet"
               href="knd-frscandidateform.css"/>
         <core-ajax
