@@ -102,7 +102,7 @@ Element providing solution to no problem in particular.
                         <div><span>Date de naissance</span>
 
                             <polymer-date-picker-trigger selectedDate="2014-08-01" opened="false"></polymer-date-picker-trigger>
-                            <paper-input id="child__BirthDateName_input_{{i}}" value="{{child.birthDate.$date}}"
+                            <paper-input id="child__BirthDateName_input_{{i}}" value="{{formatDate(child.birthDate.$date)}}"
                                on-click="{{toggleTargetDatePicker}}"
                                readonly class="date"></paper-input>
                             <polymer-date-picker
@@ -138,7 +138,7 @@ Element providing solution to no problem in particular.
                 </paper-radio-group>
                 <div><span>Date de naissance</span>
                     <polymer-date-picker-trigger selectedDate="2014-08-01" opened="false"></polymer-date-picker-trigger>
-                    <input id="newChildBirthDateName_input" value="{{newChild.birthDate.$date}}"
+                    <input id="newChildBirthDateName_input" value="{{formatDate(newChild.birthDate.$date)}}"
                            on-click="{{toggleDatePicker}}"
                            readonly class="date"/>
                     <polymer-date-picker
@@ -303,6 +303,10 @@ Element providing solution to no problem in particular.
             this.$.childrenDataUpdater.go();
 
 
+        },
+        formatDate : function(dte){
+            var m = moment(dte);
+            return m.format("YYYY-MM-DD");
         },
 
 

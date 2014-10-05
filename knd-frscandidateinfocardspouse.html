@@ -100,7 +100,7 @@ Element providing solution to no problem in particular.
                 <div>
                     <label>Date de naissance</label>
                     <polymer-date-picker-trigger selectedDate="2014-08-01" opened="false"></polymer-date-picker-trigger>
-                    <input id="SpouseBirthDateName_input" value="{{user.spouse.birthDate.$date}}"
+                    <input id="SpouseBirthDateName_input" value="{{formatDate(user.spouse.birthDate.$date)}}"
                            on-click="{{toggleDatePicker}}"
                            readonly class="date"/>
                     <polymer-date-picker
@@ -242,6 +242,10 @@ Element providing solution to no problem in particular.
 
             },
 
+            formatDate : function(dte){
+                var m = moment(dte);
+                return m.format("YYYY-MM-DD");
+            },
 
             validate: function (oldValue, newValue) {
                 /**
