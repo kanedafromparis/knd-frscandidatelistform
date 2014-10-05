@@ -176,6 +176,8 @@ navmode define the way to navigate into the resultset via URL
             <th>Date MAJ user</th>
             <th>
             </th>
+            <th>Selenium
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -197,6 +199,11 @@ navmode define the way to navigate into the resultset via URL
                 <td>{{formatDate(user.userUpdated.$date)}}</td>
                 <td>
                     <paper-icon-button id="del_{{user._id.$oid}}" icon="delete" on-click="{{submitRemoveElement}}"></paper-icon-button>
+                </td>
+                <td>
+                    <template if="{{okToLaunch(user)}}">
+                        <a href="Selenium?userid={{user._id.$oid}}">Selenium File</a>
+                    </template>
                 </td>
             </tr>
         </template>
@@ -419,6 +426,9 @@ navmode define the way to navigate into the resultset via URL
                 this.params['limit'] = this.limit;
             }
 
+        },
+        okToLaunch: function(user){
+          return false;
         },
         submitRemoveElement: function (e) {
             if(confirm("Vous allez supprimer ce dossier, etes-vous sur ?")) {
